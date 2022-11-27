@@ -6,8 +6,10 @@
   <span class="hr-space"></span>
 
   <button mat-button color="accent" *ngIf="auth.user" [matMenuTriggerFor]="userMenu" class="mr-4 right-button">
-    <avatar size="small" name="{{auth.user.name}}" class="mr-4"></avatar>
-    <span class="text-lg">{{auth.user.name}}</span>
+    <div class="flex items-center">
+      <avatar size="small" name="{{auth.user.name}}" class="mr-4"></avatar>
+      <span class="text-lg">{{auth.user.name}}</span>
+    </div>
   </button>
   <mat-menu #userMenu="matMenu">
     <button mat-menu-item (click)="editProfile()">
