@@ -1,0 +1,38 @@
+<mat-dialog-content>
+  <div class="flex items-center pt-2 mb-8 gap-x-3 font-light">
+    <mat-icon class="material-icons-outlined">login</mat-icon>
+    <h1 class="mb-0-i">Log in to Music Library</h1>
+  </div>
+  <form [formGroup]="form" (ngSubmit)="submit()" class="pt-2">
+    <div>
+      <mat-form-field class="w-full">
+        <mat-label>Username</mat-label>
+        <input type="username" matInput placeholder="" formControlName="username">
+        <mat-error *ngIf="!!form.get('username')?.errors?.['serverError']">
+          {{form.get('username')?.errors?.['serverError']}}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="mt-6">
+      <mat-form-field class="w-full">
+        <mat-label>Password</mat-label>
+        <input type="password" matInput placeholder="" formControlName="password">
+        <mat-error *ngIf="!!form.get('password')?.errors?.['serverError']">
+          {{form.get('password')?.errors?.['serverError']}}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <mat-error *ngFor="let e of errors" class="mt-2">
+      {{e}}
+    </mat-error>
+    <div class="mt-8">
+      <button mat-raised-button color="primary" class="w-full">
+        <mat-spinner *ngIf="loading" color="accent" [diameter]="20"></mat-spinner>
+        <span *ngIf="!loading">Log in</span>
+      </button>
+    </div>
+    <div class="mt-8">
+      You don't have an account? <a class="text-link" (click)="register()">Sign up now</a>!
+    </div>
+  </form>
+</mat-dialog-content>

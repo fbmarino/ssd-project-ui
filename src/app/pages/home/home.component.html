@@ -1,11 +1,36 @@
 <div class="p-8">
-<!--  <h1 class="text-3xl font-bold">-->
-<!--    Home-->
-<!--  </h1>-->
-  <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+  <mat-card *ngIf="user" class="mb-6">
+    <mat-card-content>
+      <div class="flex space-x-6 items-center p-3">
+        <h1 class="mb-0-i text-lg font-light">
+          Hi, {{user.username}}!
+        </h1>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <mat-card *ngIf="!user" class="mb-6 p-3">
+    <mat-card-content>
+      <div class="flex space-x-8 items-center">
+        <button mat-raised-button color="primary" (click)="login()">
+          Login
+        </button>
+        <mat-card-title class="mb-0-i text-lg font-light">
+          Hi! <a (click)="login()" class="font-medium">Log in now</a> to start contributing to this awesome Music Library!
+        </mat-card-title>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="flex items-center mb-6 justify-between">
+    <h1 class="mb-0-i">Releases</h1>
+    <button mat-mini-fab color="accent" matTooltip="Add new release">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
     <ng-container *ngFor="let item of items">
       <div>
-        <mat-card>
+        <mat-card class="p-3">
           <mat-card-header>
             <div mat-card-avatar class="card-header-image" [ngStyle]="{'background-image': 'url(' + item.img + ')'}"></div>
             <mat-card-title>{{item.title}}</mat-card-title>

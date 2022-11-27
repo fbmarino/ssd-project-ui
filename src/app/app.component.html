@@ -1,4 +1,9 @@
-<app-toolbar></app-toolbar>
 <div class="container">
-  <router-outlet></router-outlet>
+  <app-toolbar></app-toolbar>
+  <div *ngIf="!loading">
+    <router-outlet></router-outlet>
+  </div>
+  <div *ngIf="loading" class="p-8 page-centered">
+    <mat-spinner></mat-spinner>
+  </div>
 </div>

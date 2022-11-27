@@ -1,5 +1,41 @@
 @tailwind base;
 @tailwind utilities;
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/* utils */
+
+.mb-0-i {
+  margin-bottom: 0 !important;
+}
+
+.mat-icon.icon-grey {
+  color: #aaa !important;
+}
+
+.text-link {
+  color: #1b43bd;
+  cursor: pointer;
+}
+
+/* mat overriding */
+
+.mat-mdc-card {
+  box-shadow: none;
+  border: 1px solid #e8e8e8 !important;
+}
+
+.mat-mdc-dialog-surface, .mat-mdc-card {
+  border-radius: 10px !important;
+}
+
+.mat-mdc-dialog-content {
+  max-height: 90vh !important;
+}

@@ -1,0 +1,37 @@
+$colors: (
+  "c-1": #a2b9bc,
+  "c-2": #6b5b95,
+  "c-3": #feb236,
+  "c-4": #d64161,
+  "c-5": #ff7b25,
+  "c-6": #b2ad7f,
+  "c-7": #878f99
+);
+
+.avatar-wp {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.avatar {
+  color: #fff;
+  padding: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  width: 50px;
+  height: 50px;
+  font-weight: 300;
+}
+
+.avatar.size-small {
+  width: 32px;
+  height: 32px;
+}
+
+@each $class, $hex in $colors {
+  .avatar.#{$class} {
+    background: lighten($hex, 10%);
+  }
+}

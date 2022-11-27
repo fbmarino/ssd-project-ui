@@ -1,0 +1,32 @@
+<mat-toolbar color="primary">
+  <button mat-button (click)="home()" class="home-button">
+    <mat-icon class="material-icons-outlined home-logo">library_music</mat-icon>
+    Music Library
+  </button>
+  <span class="hr-space"></span>
+
+  <button mat-button color="accent" *ngIf="auth.user" [matMenuTriggerFor]="userMenu" class="mr-4 right-button">
+    <avatar size="small" name="{{auth.user.name}}" class="mr-4"></avatar>
+    <span class="text-lg">{{auth.user.name}}</span>
+  </button>
+  <mat-menu #userMenu="matMenu">
+    <button mat-menu-item (click)="editProfile()">
+      <mat-icon class="material-icons-outlined icon-grey">account_box</mat-icon> Edit profile
+    </button>
+    <button mat-menu-item (click)="changePassword()">
+      <mat-icon class="material-icons-outlined icon-grey">password</mat-icon> Change password
+    </button>
+    <button mat-menu-item (click)="logout()">
+      <mat-icon class="material-icons-outlined icon-grey">logout</mat-icon> Logout
+    </button>
+  </mat-menu>
+
+  <button mat-button color="accent" class="right-button" (click)="login()" *ngIf="!auth.user">
+    <mat-icon class="material-icons-outlined">login</mat-icon>
+    Log in
+  </button>
+  <button mat-button color="accent"  (click)="register()" *ngIf="!auth.user" class="right-button ml-6 mr-4">
+    <mat-icon class="material-icons-outlined">person_add</mat-icon>
+    Create new account
+  </button>
+</mat-toolbar>

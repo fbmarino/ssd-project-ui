@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {AuthManager} from "./services/auth/auth";
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,16 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'app';
+  title = 'Music Library';
+  loading = true;
+
+  constructor(private auth: AuthManager) {
+  }
+
+  ngOnInit() {
+    this.auth.userChangeObservable.subscribe(user => {
+      this.loading = false;
+    });
+    this.auth.checkCurrentUser();
+  }
 }

@@ -1,0 +1,25 @@
+.hr-space {
+  flex: 1 1 auto;
+}
+
+.home-button {
+  font-size: 1.3rem;
+  font-weight: 300;
+}
+
+.home-button .mat-icon {
+  margin-right: 20px;
+}
+
+.home-logo {
+  transform: scale(1.5);
+}
+
+.mat-mdc-button:not(:disabled) {
+  color: #fff;
+}
+
+.right-button {
+  font-size: 1.05rem;
+  font-weight: 300;
+}

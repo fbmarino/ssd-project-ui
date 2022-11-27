@@ -1,0 +1,56 @@
+<mat-dialog-content>
+  <div class="flex items-center pt-2 mb-8 gap-x-3 font-light">
+    <mat-icon class="material-icons-outlined">library_music</mat-icon>
+    <h1 class="mb-0-i">Sign up to Music Library</h1>
+  </div>
+  <form [formGroup]="form" (ngSubmit)="submit()" class="pt-2">
+    <div>
+      <mat-form-field class="w-full">
+        <mat-label>Username</mat-label>
+        <input type="username" matInput placeholder="" formControlName="username">
+        <mat-error *ngIf="!!form.get('username')?.errors?.['serverError']">
+          {{form.get('username')?.errors?.['serverError']}}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="mt-6">
+      <mat-form-field class="w-full">
+        <mat-label>Email</mat-label>
+        <input type="email" matInput placeholder="" formControlName="email">
+        <mat-error *ngIf="!!form.get('email')?.errors?.['serverError']">
+          {{form.get('email')?.errors?.['serverError']}}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="mt-6">
+      <mat-form-field class="w-full">
+        <mat-label>Password</mat-label>
+        <input type="password" matInput placeholder="" formControlName="password1">
+        <mat-error *ngIf="!!form.get('password1')?.errors?.['serverError']">
+          {{form.get('password1')?.errors?.['serverError']}}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="mt-6">
+      <mat-form-field class="w-full">
+        <mat-label>Password confirm</mat-label>
+        <input type="password" matInput placeholder="" formControlName="password2">
+        <mat-error *ngIf="!!form.get('password2')?.errors?.['serverError']">
+          {{form.get('password2')?.errors?.['serverError']}}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <mat-error *ngFor="let e of errors" class="mt-2">
+      {{e}}
+    </mat-error>
+    <div class="mt-8">
+      <button mat-raised-button color="primary" class="w-full">
+        <mat-spinner *ngIf="loading" color="accent" [diameter]="20"></mat-spinner>
+        <span *ngIf="!loading">Sign up</span>
+      </button>
+    </div>
+    <div class="mt-8">
+      You already have an account? <a class="text-link" (click)="login()">Log in now</a>!
+    </div>
+  </form>
+</mat-dialog-content>

@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {AuthManager, User} from "../../services/auth/auth";
 
 
 interface Item {
@@ -14,9 +15,21 @@ interface Item {
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  public items: Item[] = [];
+  user: User|null = null;
+  items: Item[] = [];
 
-  public ngOnInit() {
+  constructor(private readonly auth: AuthManager) {
+  }
+
+  login() {
+    this.auth.openLoginDialog();
+  }
+
+  ngOnInit() {
+    this.auth.userChangeObservable.subscribe(user => {
+      this.user = user;
+    });
+
     this.items.push(<Item>{
       title: "The plot against America",
       subtitle: "Philip Roth",
