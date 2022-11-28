@@ -1,8 +1,8 @@
 # Music Library - Angular frontend
 
-## Installation
+## Install
 
-Run `npm install`.
+Run `npm install`
 
 ## Development server
 
