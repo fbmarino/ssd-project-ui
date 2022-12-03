@@ -1,0 +1,10 @@
+<h1 class="w-full" mat-dialog-title>{{title}}</h1>
+<mat-dialog-content>
+  {{message}}
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="px-4 pb-5 flex gap-x-2 justify-end w-full">
+    <button (click)="cancel()" mat-raised-button>Cancel</button>
+    <button (click)="confirm()" mat-raised-button color="primary">Confirm</button>
+  </div>
+</mat-dialog-actions>

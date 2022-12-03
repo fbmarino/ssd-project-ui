@@ -12,23 +12,20 @@
 /* tslint:disable:no-unused-variable member-ordering */
 
 import { Inject, Injectable, Optional }                      from '@angular/core';
-import { HttpClient, HttpHeaders, HttpResponse, HttpEvent }                           from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams,
+         HttpResponse, HttpEvent }                           from '@angular/common/http';
+import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import { Login } from '../model/login';
-import { PasswordChange } from '../model/passwordChange';
-import { PasswordReset } from '../model/passwordReset';
-import { PasswordResetConfirm } from '../model/passwordResetConfirm';
-import { Registration } from '../model/registration';
-import { UserDetails } from '../model/userDetails';
+import { CD } from '../model/cd';
 
-import { BASE_PATH}                     from '../variables';
+import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
 
 @Injectable()
-export class AuthService {
+export class MusicsService {
 
     protected basePath = 'http://127.0.0.1:8000/api/v1';
     public defaultHeaders = new HttpHeaders();
@@ -61,19 +58,14 @@ export class AuthService {
 
     /**
      *
-     * Check the credentials and return the REST Token if the credentials are valid and authenticated. Calls Django Auth login method to register User ID in Django session framework  Accept the following POST parameters: username, password Return the REST Framework Token Object&#39;s key.
-     * @param data
+     *
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public authLoginCreate(data: Login, observe?: 'body', reportProgress?: boolean): Observable<Login>;
-    public authLoginCreate(data: Login, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Login>>;
-    public authLoginCreate(data: Login, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Login>>;
-    public authLoginCreate(data: Login, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling authLoginCreate.');
-        }
+    public musicsByPublishedByList(observe?: 'body', reportProgress?: boolean): Observable<Array<CD>>;
+    public musicsByPublishedByList(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<CD>>>;
+    public musicsByPublishedByList(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<CD>>>;
+    public musicsByPublishedByList(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -95,13 +87,8 @@ export class AuthService {
         const consumes: string[] = [
             'application/json'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
 
-        return this.httpClient.post<Login>(`${this.basePath}/auth/login/`,
-            data,
+        return this.httpClient.get<Array<CD>>(`${this.basePath}/musics/by_published_by`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -112,15 +99,15 @@ export class AuthService {
     }
 
     /**
-     * Calls Django logout method and delete the Token object assigned to the current User object.
-     * Accepts/Returns nothing.
+     *
+     *
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public authLogoutCreate(observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public authLogoutCreate(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public authLogoutCreate(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public authLogoutCreate(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public musicsByartistList(observe?: 'body', reportProgress?: boolean): Observable<Array<CD>>;
+    public musicsByartistList(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<CD>>>;
+    public musicsByartistList(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<CD>>>;
+    public musicsByartistList(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -143,8 +130,7 @@ export class AuthService {
             'application/json'
         ];
 
-        return this.httpClient.post<any>(`${this.basePath}/auth/logout/`,
-            null,
+        return this.httpClient.get<Array<CD>>(`${this.basePath}/musics/byartist`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -155,15 +141,15 @@ export class AuthService {
     }
 
     /**
-     * Calls Django logout method and delete the Token object assigned to the current User object.
-     * Accepts/Returns nothing.
+     *
+     *
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public authLogoutList(observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public authLogoutList(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public authLogoutList(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public authLogoutList(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public musicsBynameList(observe?: 'body', reportProgress?: boolean): Observable<Array<CD>>;
+    public musicsBynameList(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<CD>>>;
+    public musicsBynameList(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<CD>>>;
+    public musicsBynameList(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -186,163 +172,7 @@ export class AuthService {
             'application/json'
         ];
 
-        return this.httpClient.get<any>(`${this.basePath}/auth/logout/`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Calls Django Auth SetPasswordForm save method.
-     * Accepts the following POST parameters: new_password1, new_password2 Returns the success/fail message.
-     * @param data
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public authPasswordChangeCreate(data: PasswordChange, observe?: 'body', reportProgress?: boolean): Observable<PasswordChange>;
-    public authPasswordChangeCreate(data: PasswordChange, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PasswordChange>>;
-    public authPasswordChangeCreate(data: PasswordChange, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PasswordChange>>;
-    public authPasswordChangeCreate(data: PasswordChange, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling authPasswordChangeCreate.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // authentication (Basic) required
-        if (this.configuration.username || this.configuration.password) {
-            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
-        }
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        return this.httpClient.post<PasswordChange>(`${this.basePath}/auth/password/change/`,
-            data,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Password reset e-mail link is confirmed, therefore this resets the user&#39;s password.
-     * Accepts the following POST parameters: token, uid,     new_password1, new_password2 Returns the success/fail message.
-     * @param data
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public authPasswordResetConfirmCreate(data: PasswordResetConfirm, observe?: 'body', reportProgress?: boolean): Observable<PasswordResetConfirm>;
-    public authPasswordResetConfirmCreate(data: PasswordResetConfirm, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PasswordResetConfirm>>;
-    public authPasswordResetConfirmCreate(data: PasswordResetConfirm, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PasswordResetConfirm>>;
-    public authPasswordResetConfirmCreate(data: PasswordResetConfirm, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling authPasswordResetConfirmCreate.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // authentication (Basic) required
-        if (this.configuration.username || this.configuration.password) {
-            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
-        }
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        return this.httpClient.post<PasswordResetConfirm>(`${this.basePath}/auth/password/reset/confirm/`,
-            data,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Calls Django Auth PasswordResetForm save method.
-     * Accepts the following POST parameters: email Returns the success/fail message.
-     * @param data
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public authPasswordResetCreate(data: PasswordReset, observe?: 'body', reportProgress?: boolean): Observable<PasswordReset>;
-    public authPasswordResetCreate(data: PasswordReset, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PasswordReset>>;
-    public authPasswordResetCreate(data: PasswordReset, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PasswordReset>>;
-    public authPasswordResetCreate(data: PasswordReset, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling authPasswordResetCreate.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // authentication (Basic) required
-        if (this.configuration.username || this.configuration.password) {
-            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
-        }
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        return this.httpClient.post<PasswordReset>(`${this.basePath}/auth/password/reset/`,
-            data,
+        return this.httpClient.get<Array<CD>>(`${this.basePath}/musics/byname`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -359,13 +189,13 @@ export class AuthService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public authRegistrationCreate(data: Registration, observe?: 'body', reportProgress?: boolean): Observable<Registration>;
-    public authRegistrationCreate(data: Registration, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Registration>>;
-    public authRegistrationCreate(data: Registration, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Registration>>;
-    public authRegistrationCreate(data: Registration, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public musicsCreate(data: CD, observe?: 'body', reportProgress?: boolean): Observable<CD>;
+    public musicsCreate(data: CD, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CD>>;
+    public musicsCreate(data: CD, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CD>>;
+    public musicsCreate(data: CD, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling authRegistrationCreate.');
+            throw new Error('Required parameter data was null or undefined when calling musicsCreate.');
         }
 
         let headers = this.defaultHeaders;
@@ -393,7 +223,7 @@ export class AuthService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.post<Registration>(`${this.basePath}/auth/registration/`,
+        return this.httpClient.post<CD>(`${this.basePath}/musics/`,
             data,
             {
                 withCredentials: this.configuration.withCredentials,
@@ -405,19 +235,113 @@ export class AuthService {
     }
 
     /**
-     * Reads and updates UserModel fields Accepts GET, PUT, PATCH methods.
-     * Default accepted fields: username, first_name, last_name Default display fields: pk, username, email, first_name, last_name Read-only fields: pk, email  Returns UserModel fields.
+     *
+     *
+     * @param id A unique integer value identifying this cd.
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public musicsDelete(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public musicsDelete(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public musicsDelete(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public musicsDelete(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling musicsDelete.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (Basic) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+
+        return this.httpClient.delete<any>(`${this.basePath}/musics/${encodeURIComponent(String(id))}/`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     *
+     *
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public musicsList(observe?: 'body', reportProgress?: boolean): Observable<Array<CD>>;
+    public musicsList(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<CD>>>;
+    public musicsList(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<CD>>>;
+    public musicsList(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // authentication (Basic) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+
+        return this.httpClient.get<Array<CD>>(`${this.basePath}/musics/`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     *
+     *
+     * @param id A unique integer value identifying this cd.
      * @param data
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public authUserPartialUpdate(data: UserDetails, observe?: 'body', reportProgress?: boolean): Observable<UserDetails>;
-    public authUserPartialUpdate(data: UserDetails, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserDetails>>;
-    public authUserPartialUpdate(data: UserDetails, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserDetails>>;
-    public authUserPartialUpdate(data: UserDetails, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public musicsPartialUpdate(id: number, data: CD, observe?: 'body', reportProgress?: boolean): Observable<CD>;
+    public musicsPartialUpdate(id: number, data: CD, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CD>>;
+    public musicsPartialUpdate(id: number, data: CD, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CD>>;
+    public musicsPartialUpdate(id: number, data: CD, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling musicsPartialUpdate.');
+        }
 
         if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling authUserPartialUpdate.');
+            throw new Error('Required parameter data was null or undefined when calling musicsPartialUpdate.');
         }
 
         let headers = this.defaultHeaders;
@@ -445,7 +369,7 @@ export class AuthService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.patch<UserDetails>(`${this.basePath}/auth/user/`,
+        return this.httpClient.patch<CD>(`${this.basePath}/musics/${encodeURIComponent(String(id))}/`,
             data,
             {
                 withCredentials: this.configuration.withCredentials,
@@ -457,15 +381,20 @@ export class AuthService {
     }
 
     /**
-     * Reads and updates UserModel fields Accepts GET, PUT, PATCH methods.
-     * Default accepted fields: username, first_name, last_name Default display fields: pk, username, email, first_name, last_name Read-only fields: pk, email  Returns UserModel fields.
+     *
+     *
+     * @param id A unique integer value identifying this cd.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public authUserRead(observe?: 'body', reportProgress?: boolean): Observable<UserDetails>;
-    public authUserRead(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserDetails>>;
-    public authUserRead(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserDetails>>;
-    public authUserRead(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public musicsRead(id: number, observe?: 'body', reportProgress?: boolean): Observable<CD>;
+    public musicsRead(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CD>>;
+    public musicsRead(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CD>>;
+    public musicsRead(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling musicsRead.');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -488,7 +417,7 @@ export class AuthService {
             'application/json'
         ];
 
-        return this.httpClient.get<UserDetails>(`${this.basePath}/auth/user/`,
+        return this.httpClient.get<CD>(`${this.basePath}/musics/${encodeURIComponent(String(id))}/`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -499,19 +428,24 @@ export class AuthService {
     }
 
     /**
-     * Reads and updates UserModel fields Accepts GET, PUT, PATCH methods.
-     * Default accepted fields: username, first_name, last_name Default display fields: pk, username, email, first_name, last_name Read-only fields: pk, email  Returns UserModel fields.
+     *
+     *
+     * @param id A unique integer value identifying this cd.
      * @param data
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public authUserUpdate(data: UserDetails, observe?: 'body', reportProgress?: boolean): Observable<UserDetails>;
-    public authUserUpdate(data: UserDetails, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserDetails>>;
-    public authUserUpdate(data: UserDetails, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserDetails>>;
-    public authUserUpdate(data: UserDetails, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public musicsUpdate(id: number, data: CD, observe?: 'body', reportProgress?: boolean): Observable<CD>;
+    public musicsUpdate(id: number, data: CD, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CD>>;
+    public musicsUpdate(id: number, data: CD, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CD>>;
+    public musicsUpdate(id: number, data: CD, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling musicsUpdate.');
+        }
 
         if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling authUserUpdate.');
+            throw new Error('Required parameter data was null or undefined when calling musicsUpdate.');
         }
 
         let headers = this.defaultHeaders;
@@ -539,7 +473,7 @@ export class AuthService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.put<UserDetails>(`${this.basePath}/auth/user/`,
+        return this.httpClient.put<CD>(`${this.basePath}/musics/${encodeURIComponent(String(id))}/`,
             data,
             {
                 withCredentials: this.configuration.withCredentials,

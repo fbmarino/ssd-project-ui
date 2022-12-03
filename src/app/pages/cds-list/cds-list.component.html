@@ -1,25 +1,62 @@
 <div class="flex items-center mb-6 justify-between">
-  <h1 class="mb-0-i">CDs db</h1>
-  <button mat-mini-fab color="accent" matTooltip="Add new release">
+  <h1 class="mb-0-i">CDs Library</h1>
+  <button (click)="openCreateCdDialog()" mat-mini-fab color="accent" matTooltip="Add a CD">
     <mat-icon>add</mat-icon>
   </button>
 </div>
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
   <ng-container *ngFor="let item of items">
     <div>
       <mat-card class="p-3">
         <mat-card-header>
-          <div mat-card-avatar class="card-header-image" [ngStyle]="{'background-image': 'url(' + item.img + ')'}"></div>
-          <mat-card-title>{{item.title}}</mat-card-title>
-          <mat-card-subtitle>{{item.subtitle}}</mat-card-subtitle>
+          <div mat-card-avatar class="mr-4"><cd-logo [name]="item.name"></cd-logo></div>
+          <mat-card-title>
+            <div class="mb-1">
+              {{item.name}}
+            </div>
+          </mat-card-title>
+          <mat-card-subtitle>by {{item.artist}}</mat-card-subtitle>
         </mat-card-header>
-        <!--        <img mat-card-image src="{{item.img}}" alt="Photo of a Shiba Inu">-->
         <mat-card-content>
-          <p class="py-2">{{item.description}} </p>
+          <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 mt-6">
+            <div class="flex">
+              <div class="font-medium w-1/2">Genre:</div>
+              <div class="font-light w-1/2">{{item.genre}}</div>
+            </div>
+            <div class="flex">
+              <div class="font-medium w-1/2">Record Company:</div>
+              <div class="font-light w-1/2">{{item.record_company}}</div>
+            </div>
+            <div class="flex">
+              <div class="font-medium w-1/2">EAN Code:</div>
+              <div class="font-light w-1/2">{{item.ean_code}}</div>
+            </div>
+            <div class="flex">
+              <div class="font-medium w-1/2">Price:</div>
+              <div class="font-light w-1/2">{{item.price}} €</div>
+            </div>
+          </div>
+          <div>
+            <div class="mt-8 font-light flex gap-x-4 items-start">
+              <mat-icon class="material-icons-outlined icon-grey">info</mat-icon>
+              <div>
+                Published by {{item.user}} - {{item.created_at}}
+                <span *ngIf="item.updated_at !== item.created_at">
+                , last update {{item.updated_at}}
+              </span>
+              </div>
+            </div>
+          </div>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-button>SHOW MORE</button>
-          <button mat-button>SHARE</button>
+          <div class="flex justify-end w-full">
+            <button mat-icon-button color="accent" class="mr-2" matTooltip="Edit CD" (click)="openEditCdDialog(item)">
+              <mat-icon class="material-icons-outlined">edit</mat-icon>
+            </button>
+            <button mat-icon-button matTooltip="Delete CD" (click)="deleteCd(item)">
+              <mat-icon class="material-icons-outlined">delete</mat-icon>
+            </button>
+          </div>
         </mat-card-actions>
       </mat-card>
     </div>

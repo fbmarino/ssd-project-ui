@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
-import {AuthService, Register} from "../../services/api";
+import {AuthService, Registration} from "../../services/api";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {AuthManager, User} from "../../services/auth/auth";
 import {MatDialogRef} from "@angular/material/dialog";
+import {handleFormHttpError} from "../../shared/errorHandlers";
 
 @Component({
   selector: 'register-dialog',
@@ -40,7 +41,7 @@ export class RegisterDialogComponent implements OnInit {
     this.form.markAllAsTouched();
     this.errors = [];
     this.loading = true;
-    let data: Register = {
+    let data: Registration = {
       email: this.form.value.email,
       username: this.form.value.username,
       password1: this.form.value.password1,
@@ -57,19 +58,7 @@ export class RegisterDialogComponent implements OnInit {
       this.dialogRef.close();
     }).catch((res) => {
       this.loading = false;
-      if (res.error && !(res.error instanceof ProgressEvent)) {
-        for (let k in res.error) {
-          if (k in this.form.controls) {
-            this.form.controls[k].setErrors({
-              serverError: res.error[k][0]
-            });
-          } else {
-            this.errors.push(res.error[k][0]);
-          }
-        }
-      } else {
-        console.error(res);
-      }
+      handleFormHttpError(res, this.form, this.errors);
     });
   }
 }

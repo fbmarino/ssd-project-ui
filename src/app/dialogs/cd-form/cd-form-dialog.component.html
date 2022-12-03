@@ -1,34 +1,79 @@
 <mat-dialog-content>
   <div class="flex items-center pt-2 mb-8 gap-x-3 font-light">
-    <mat-icon class="material-icons-outlined">password</mat-icon>
-    <h1 class="mb-0-i">Change password</h1>
+    <mat-icon class="material-icons-outlined">{{id ? 'edit' : 'add'}}</mat-icon>
+    <h1 class="mb-0-i" *ngIf="!id">Add a CD</h1>
+    <h1 class="mb-0-i" *ngIf="!!id">Edit CD</h1>
   </div>
-  <form [formGroup]="form" (ngSubmit)="submit()" class="pt-2">
-    <div>
+  <div *ngIf="preloading" class="flex justify-center items-center preloading">
+    <mat-spinner diameter="32"></mat-spinner>
+  </div>
+  <form *ngIf="!preloading" [formGroup]="form" (ngSubmit)="submit()" class="pt-2">
+    <div class="w-full">
       <mat-form-field class="w-full">
-        <mat-label>Password</mat-label>
-        <input type="password" matInput placeholder="" formControlName="new_password1">
-        <mat-error *ngIf="!!form.get('new_password1')?.errors?.['serverError']">
-          {{form.get('new_password1')?.errors?.['serverError']}}
+        <mat-label>Name</mat-label>
+        <input type="text" matInput placeholder="Nuntereggae più" formControlName="name">
+        <mat-error *ngIf="!!form.get('name')?.errors?.['serverError']">
+          {{form.get('name')?.errors?.['serverError']}}
         </mat-error>
       </mat-form-field>
     </div>
-    <div class="mt-6">
+    <div class="w-full">
       <mat-form-field class="w-full">
-        <mat-label>Password confirm</mat-label>
-        <input type="password" matInput placeholder="" formControlName="new_password2">
-        <mat-error *ngIf="!!form.get('new_password2')?.errors?.['serverError']">
-          {{form.get('new_password2')?.errors?.['serverError']}}
+        <mat-label>Artist</mat-label>
+        <input type="text" matInput placeholder="Rino Gaetano" formControlName="artist">
+        <mat-error *ngIf="!!form.get('artist')?.errors?.['serverError']">
+          {{form.get('artist')?.errors?.['serverError']}}
         </mat-error>
       </mat-form-field>
     </div>
-    <mat-error *ngFor="let e of errors" class="mt-2">
+    <div class="flex gap-x-4">
+      <div class="w-full">
+        <mat-form-field class="w-full">
+          <mat-label>Genre</mat-label>
+          <input type="text" matInput placeholder="Pop" formControlName="genre">
+          <mat-error *ngIf="!!form.get('genre')?.errors?.['serverError']">
+            {{form.get('genre')?.errors?.['serverError']}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="w-full">
+        <mat-form-field class="w-full">
+          <mat-label>Record Company</mat-label>
+          <input type="text" matInput placeholder="RCA Italiana" formControlName="record_company">
+          <mat-error *ngIf="!!form.get('record_company')?.errors?.['serverError']">
+            {{form.get('record_company')?.errors?.['serverError']}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="flex gap-x-4">
+      <div class="w-1/2">
+        <mat-form-field class="w-full">
+          <mat-label>EAN Code</mat-label>
+          <input type="text" matInput placeholder="978020137962" formControlName="ean_code">
+          <mat-error *ngIf="!!form.get('ean_code')?.errors?.['serverError']">
+            {{form.get('ean_code')?.errors?.['serverError']}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="w-1/2">
+        <mat-form-field class="w-full">
+          <mat-label>Price</mat-label>
+          <input type="text" matInput placeholder="10.99" formControlName="price">
+          <span matSuffix="" class="mr-4">€</span>
+          <mat-error *ngIf="!!form.get('price')?.errors?.['serverError']">
+            {{form.get('price')?.errors?.['serverError']}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <mat-error *ngFor="let e of errors" class="w-full mt-2">
       {{e}}
     </mat-error>
-    <div class="mt-8">
+    <div class="w-full mt-8">
       <button mat-raised-button color="primary" class="w-full">
         <mat-spinner *ngIf="loading" color="accent" [diameter]="20"></mat-spinner>
-        <span *ngIf="!loading">Change password</span>
+        <span *ngIf="!loading">Save</span>
       </button>
     </div>
   </form>

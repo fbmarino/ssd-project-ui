@@ -1,3 +1,5 @@
 export * from './auth.service';
 import { AuthService } from './auth.service';
-export const APIS = [AuthService];
+export * from './musics.service';
+import { MusicsService } from './musics.service';
+export const APIS = [AuthService, MusicsService];

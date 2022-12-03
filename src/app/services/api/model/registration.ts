@@ -11,6 +11,10 @@
  */
 
 
-export interface VerifyEmail { 
-    key: string;
+export interface Registration {
+    username: string;
+    email: string;
+    password1: string;
+    password2: string;
+    group?: string;
 }

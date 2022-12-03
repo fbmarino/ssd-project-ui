@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {catchError, Observable, of, ReplaySubject} from "rxjs";
-import {AuthService, Login, PasswordChange, PasswordResetConfirm, Register, UserDetails} from "../api";
+import {AuthService, Login, PasswordChange, PasswordResetConfirm, Registration, UserDetails} from "../api";
 import {HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest} from "@angular/common/http";
 import {MatDialog} from "@angular/material/dialog";
 import {LoginDialogComponent} from "../../dialogs/login/login-dialog.component";
@@ -91,7 +91,7 @@ export class AuthManager {
     });
   }
 
-  register(data: Register) {
+  register(data: Registration) {
     return new Promise<User>((resolve, reject) => {
       this.authService.authRegistrationCreate(data)
         .pipe(

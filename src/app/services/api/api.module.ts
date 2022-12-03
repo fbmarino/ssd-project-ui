@@ -4,13 +4,14 @@ import { HttpClient } from '@angular/common/http';
 
 
 import { AuthService } from './api/auth.service';
+import { MusicsService } from "./api/musics.service";
 
 @NgModule({
   imports:      [],
   declarations: [],
   exports:      [],
   providers: [
-    AuthService
+    AuthService, MusicsService
   ]
 })
 export class ApiModule {

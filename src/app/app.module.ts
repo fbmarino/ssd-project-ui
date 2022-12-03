@@ -30,6 +30,8 @@ import {EditProfileDialogComponent} from "./dialogs/edit-profile/edit-profile-di
 import {CdFormDialogComponent} from "./dialogs/cd-form/cd-form-dialog.component";
 import { CdsListComponent } from './pages/cds-list/cds-list.component';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {CdLogoComponent} from "./shared/cd-logo/cd-logo.component";
+import {ConfirmDialogComponent} from "./shared/confirm-dialog/confirm-dialog.component";
 
 @NgModule({
   declarations: [
@@ -42,7 +44,9 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
     CdFormDialogComponent,
     EditProfileDialogComponent,
     AvatarComponent,
+    CdLogoComponent,
     CdsListComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     BrowserModule,

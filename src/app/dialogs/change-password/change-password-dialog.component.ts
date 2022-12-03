@@ -2,8 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {AuthService, PasswordResetConfirm} from "../../services/api";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {AuthManager, User} from "../../services/auth/auth";
+import {AuthManager} from "../../services/auth/auth";
 import {MatDialogRef} from "@angular/material/dialog";
+import {handleFormHttpError} from "../../shared/errorHandlers";
 
 @Component({
   selector: 'login-dialog',
@@ -43,19 +44,7 @@ export class ChangePasswordDialogComponent implements OnInit {
       this.dialogRef.close();
     }).catch((res) => {
       this.loading = false;
-      if (res.error && !(res.error instanceof ProgressEvent)) {
-        for (let k in res.error) {
-          if (k in this.form.controls) {
-            this.form.controls[k].setErrors({
-              serverError: res.error[k][0]
-            });
-          } else {
-            this.errors.push(res.error[k][0]);
-          }
-        }
-      } else {
-        console.error(res);
-      }
+      handleFormHttpError(res, this.form, this.errors);
     });
   }
 }

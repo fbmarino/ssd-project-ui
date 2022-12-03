@@ -1,0 +1,45 @@
+$colors: (
+  "c-1": #6b5b95,
+  "c-2": #0097A7,
+  "c-3": #d64161,
+  "c-4": #F57C00,
+  "c-5": #1976D2,
+  "c-6": #4CAF50
+);
+
+.cd-logo-wp {
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+}
+
+.cd-logo {
+  border-radius: 100%;
+  width: 50px;
+  height: 50px;
+  border: 20px solid #ddd;
+}
+
+.cd-logo.size-small {
+  width: 32px;
+  height: 32px;
+  border-width: 12px;
+}
+
+@each $class, $hex in $colors {
+  .cd-logo.#{$class} {
+    border-color: lighten($hex, 10%);
+  }
+}
+
+.cd-label {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  text-align: center;
+  font-weight: 300;
+  font-size: 9px;
+  color: #fff;
+  opacity: 0.7;
+}
