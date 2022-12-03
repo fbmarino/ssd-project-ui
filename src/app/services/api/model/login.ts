@@ -11,7 +11,7 @@
  */
 
 
-export interface Login { 
+export interface Login {
     username?: string;
     email?: string;
     password: string;

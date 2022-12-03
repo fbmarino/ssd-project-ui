@@ -49,7 +49,7 @@ export class EditProfileDialogComponent implements OnInit {
       this.dialogRef.close();
     }).catch((res) => {
       this.loading = false;
-      if (res.error) {
+      if (res.error && !(res.error instanceof ProgressEvent)) {
         for (let k in res.error) {
           if (k in this.form.controls) {
             this.form.controls[k].setErrors({

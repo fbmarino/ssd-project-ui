@@ -27,6 +27,9 @@ import {RegisterDialogComponent} from "./dialogs/register/register-dialog.compon
 import {ChangePasswordDialogComponent} from "./dialogs/change-password/change-password-dialog.component";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {EditProfileDialogComponent} from "./dialogs/edit-profile/edit-profile-dialog.component";
+import {CdFormDialogComponent} from "./dialogs/cd-form/cd-form-dialog.component";
+import { CdsListComponent } from './pages/cds-list/cds-list.component';
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 
 @NgModule({
   declarations: [
@@ -36,8 +39,10 @@ import {EditProfileDialogComponent} from "./dialogs/edit-profile/edit-profile-di
     LoginDialogComponent,
     RegisterDialogComponent,
     ChangePasswordDialogComponent,
+    CdFormDialogComponent,
     EditProfileDialogComponent,
     AvatarComponent,
+    CdsListComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,6 +55,7 @@ import {EditProfileDialogComponent} from "./dialogs/edit-profile/edit-profile-di
     MatButtonModule,
     MatCardModule,
     MatFormFieldModule,
+    MatSlideToggleModule,
     MatProgressSpinnerModule,
     MatDialogModule,
     MatSnackBarModule,

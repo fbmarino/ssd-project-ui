@@ -40,13 +40,19 @@
         </mat-error>
       </mat-form-field>
     </div>
+    <div class="mt-6">
+      <mat-slide-toggle formControlName="group">I want to be a publisher user</mat-slide-toggle>
+      <mat-error *ngIf="!!form.get('group')?.errors?.['serverError']">
+        {{form.get('group')?.errors?.['serverError']}}
+      </mat-error>
+    </div>
     <mat-error *ngFor="let e of errors" class="mt-2">
       {{e}}
     </mat-error>
     <div class="mt-8">
       <button mat-raised-button color="primary" class="w-full">
         <mat-spinner *ngIf="loading" color="accent" [diameter]="20"></mat-spinner>
-        <span *ngIf="!loading">Sign up</span>
+        <span *ngIf="!loading">Yes</span>
       </button>
     </div>
     <div class="mt-8">

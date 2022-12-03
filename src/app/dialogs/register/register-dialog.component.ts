@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
-import {AuthService} from "../../services/api";
+import {AuthService, Register} from "../../services/api";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {AuthManager, User} from "../../services/auth/auth";
 import {MatDialogRef} from "@angular/material/dialog";
@@ -27,6 +27,7 @@ export class RegisterDialogComponent implements OnInit {
       username: new FormControl(''),
       password1: new FormControl(''),
       password2: new FormControl(''),
+      group: new FormControl(true)
     });
   }
 
@@ -39,12 +40,16 @@ export class RegisterDialogComponent implements OnInit {
     this.form.markAllAsTouched();
     this.errors = [];
     this.loading = true;
-    this.auth.register({
+    let data: Register = {
       email: this.form.value.email,
       username: this.form.value.username,
       password1: this.form.value.password1,
       password2: this.form.value.password2,
-    }).then((user: User) => {
+    };
+    if (this.form.value.group) {
+      data.group = 'publishers';
+    }
+    this.auth.register(data).then((user: User) => {
       this.loading = false;
       this.snackbar.open(`Welcome ${user.username}!`, 'Close', {
         duration: 3000
@@ -52,7 +57,7 @@ export class RegisterDialogComponent implements OnInit {
       this.dialogRef.close();
     }).catch((res) => {
       this.loading = false;
-      if (res.error) {
+      if (res.error && !(res.error instanceof ProgressEvent)) {
         for (let k in res.error) {
           if (k in this.form.controls) {
             this.form.controls[k].setErrors({
