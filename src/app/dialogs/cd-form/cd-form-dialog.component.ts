@@ -42,7 +42,7 @@ export class CdFormDialogComponent implements OnInit {
       price: new FormControl(''),
     });
     if (this.id > 0) {
-      this.musicsService.musicsRead(this.id+22222)
+      this.musicsService.musicsRead(this.id)
         .pipe(
           catchError((response) => {
             this.snackbar.open('CD was not found', 'Close', {
