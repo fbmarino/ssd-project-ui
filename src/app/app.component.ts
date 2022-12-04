@@ -17,6 +17,6 @@ export class AppComponent {
     this.auth.userChangeObservable.subscribe(user => {
       this.loading = false;
     });
-    this.auth.checkCurrentUser();
+    this.auth.checkCurrentUser().catch(e => {});
   }
 }

@@ -52,10 +52,6 @@ export class AuthManager {
     });
   }
 
-  checkCurrentUser() {
-    this.checkCurrentWithApi().catch(e => {});
-  }
-
   get user(): User|null {
     return this.currentUser;
   }
@@ -94,7 +90,7 @@ export class AuthManager {
           })
         )
         .subscribe((res: any) => {
-          this.checkCurrentWithApi().then(res => {
+          this.checkCurrentUser().then(res => {
             resolve(res);
           }).catch(res => {
             reject(res);
@@ -113,7 +109,7 @@ export class AuthManager {
           })
         )
         .subscribe((res: any) => {
-          this.checkCurrentWithApi().then(res => {
+          this.checkCurrentUser().then(res => {
             resolve(res);
           }).catch(res => {
             reject(res);
@@ -164,17 +160,13 @@ export class AuthManager {
           })
         )
         .subscribe(() => {
-          this.setAsLoggedOut();
+          this.logged.next(null);
           resolve(true);
         });
     });
   }
 
-  private setAsLoggedOut() {
-    this.logged.next(null);
-  }
-
-  private checkCurrentWithApi() {
+  checkCurrentUser() {
     return new Promise<User>((resolve, reject) => {
       this.authService.authUserRead()
         .pipe(
