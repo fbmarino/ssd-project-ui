@@ -8,6 +8,10 @@ import {CD} from "../../services/api/model/cd";
 import {handleFormHttpError} from "../../shared/errorHandlers";
 import {catchError, of} from "rxjs";
 
+export interface CdFormDialogResult {
+  cd: CD;
+}
+
 @Component({
   selector: 'cd-form-dialog',
   templateUrl: './cd-form-dialog.component.html',
@@ -68,11 +72,11 @@ export class CdFormDialogComponent implements OnInit {
   }
 
   submit() {
-    // TODO handle edit mode
     this.form.markAllAsTouched();
     this.errors = [];
     this.loading = true;
-    this.musicsService.musicsCreate({
+
+    let data = {
       name: this.form.value.name,
       artist: this.form.value.artist,
       record_company: this.form.value.record_company,
@@ -81,7 +85,14 @@ export class CdFormDialogComponent implements OnInit {
       price: this.form.value.price,
       price_currency: 'EUR',
       published_by: 4
-    })
+    };
+    let obs;
+    if (this.id > 0) {
+      obs = this.musicsService.musicsUpdate(this.id, data);
+    } else {
+      obs = this.musicsService.musicsCreate(data);
+    }
+    obs
       .pipe(
         catchError((response) => {
           this.loading = false;
@@ -91,11 +102,18 @@ export class CdFormDialogComponent implements OnInit {
       )
       .subscribe((response: CD) => {
         this.loading = false;
-        this.snackbar.open(`CD added to the library successfully`, 'Close', {
-          duration: 3000
+        if (this.id > 0) {
+          this.snackbar.open(`CD updated successfully`, 'Close', {
+            duration: 3000
+          });
+        } else {
+          this.snackbar.open(`CD added to the library successfully`, 'Close', {
+            duration: 3000
+          });
+        }
+        this.dialogRef.close(<CdFormDialogResult>{
+          cd: response
         });
-        // TODO add or update cd into the list (use close data)
-        this.dialogRef.close();
     });
   }
 }

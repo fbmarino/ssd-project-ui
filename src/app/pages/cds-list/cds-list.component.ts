@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
-import {CdFormDialogComponent} from "../../dialogs/cd-form/cd-form-dialog.component";
+import {CdFormDialogComponent, CdFormDialogResult} from "../../dialogs/cd-form/cd-form-dialog.component";
 import {MusicsService} from "../../services/api";
 import {ConfirmDialogComponent, ConfirmDialogData} from "../../shared/confirm-dialog/confirm-dialog.component";
 import {catchError, filter, of} from "rxjs";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {CD} from "../../services/api/model/cd";
 
-export interface CDItem {
+export interface CDListItem {
   id: number;
   name: string;
   artist: string;
@@ -28,7 +29,7 @@ export interface CDItem {
   styleUrls: ['./cds-list.component.scss']
 })
 export class CdsListComponent implements OnInit {
-  items: CDItem[] = [];
+  items: CDListItem[] = [];
 
   constructor(private readonly dialog: MatDialog,
               private readonly musicsService: MusicsService,
@@ -38,19 +39,26 @@ export class CdsListComponent implements OnInit {
   openCreateCdDialog() {
     this.dialog.open(CdFormDialogComponent, {
       width: '600px'
-    });
+    }).afterClosed().pipe(filter((dialogResult) => dialogResult && dialogResult.cd))
+      .subscribe((dialogResult: CdFormDialogResult) => {
+        this.items.unshift(CdsListComponent.cdToCdListItem(dialogResult.cd));
+      });
   }
 
-  openEditCdDialog(cd: CDItem) {
+  openEditCdDialog(cd: CDListItem) {
     this.dialog.open(CdFormDialogComponent, {
       width: '600px',
       data: {
         id: cd.id
       }
-    });
+    }).afterClosed().pipe(filter((dialogResult) => dialogResult && dialogResult.cd))
+      .subscribe((dialogResult: CdFormDialogResult) => {
+        this.items = this.items.map(cdi => cdi.id === cd.id
+          ? CdsListComponent.cdToCdListItem(dialogResult.cd) : cdi);
+      });
   }
 
-  deleteCd(cd: CDItem) {
+  deleteCd(cd: CDListItem) {
     this.dialog.open(ConfirmDialogComponent, {
       width: '600px',
       data: <ConfirmDialogData>{
@@ -87,25 +95,29 @@ export class CdsListComponent implements OnInit {
             duration: 2000
           });
         });
-    });;
+    });
   }
 
   ngOnInit(): void {
     this.musicsService.musicsList().subscribe(e => {
-      this.items = e.map(e => (<CDItem>{
-        id: e.id,
-        name: e.name,
-        artist: e.artist,
-        record_company: e.record_company,
-        genre: e.genre,
-        ean_code: e.ean_code,
-        price: e.price,
-        price_currency: e.price_currency,
-        published_by: e.published_by,
-        user: e.user,
-        created_at: e.created_at ? new Date(e.created_at).toLocaleString() : '?',
-        updated_at: e.updated_at ? new Date(e.updated_at).toLocaleString() : '?'
-      }));
+      this.items = e.reverse().map(cdi => CdsListComponent.cdToCdListItem(cdi));
     })
+  }
+
+  private static cdToCdListItem(e: CD) {
+    return <CDListItem>{
+      id: e.id,
+      name: e.name,
+      artist: e.artist,
+      record_company: e.record_company,
+      genre: e.genre,
+      ean_code: e.ean_code,
+      price: e.price,
+      price_currency: e.price_currency,
+      published_by: e.published_by,
+      user: e.user,
+      created_at: e.created_at ? new Date(e.created_at).toLocaleString() : '?',
+      updated_at: e.updated_at ? new Date(e.updated_at).toLocaleString() : '?'
+    };
   }
 }
