@@ -41,26 +41,19 @@ export class User {
   providedIn: 'root'
 })
 export class AuthManager {
-  private accessToken: string | null;
   private logged = new ReplaySubject<User|null>(1);
 
   public readonly userChangeObservable = this.logged.asObservable();
   public currentUser: User|null = null;
 
   constructor(private dialog: MatDialog, private authService: AuthService) {
-    this.accessToken = null;
-
     this.userChangeObservable.subscribe(user => {
       this.currentUser = user;
     });
   }
 
   checkCurrentUser() {
-    this.checkAccessToken(localStorage.getItem('accessToken')).catch(e => {});
-  }
-
-  get token(): string|null {
-    return this.accessToken;
+    this.checkCurrentWithApi().catch(e => {});
   }
 
   get user(): User|null {
@@ -101,7 +94,7 @@ export class AuthManager {
           })
         )
         .subscribe((res: any) => {
-          this.checkAccessToken(res.key).then(res => {
+          this.checkCurrentWithApi().then(res => {
             resolve(res);
           }).catch(res => {
             reject(res);
@@ -120,7 +113,7 @@ export class AuthManager {
           })
         )
         .subscribe((res: any) => {
-          this.checkAccessToken(res.key).then(res => {
+          this.checkCurrentWithApi().then(res => {
             resolve(res);
           }).catch(res => {
             reject(res);
@@ -171,34 +164,21 @@ export class AuthManager {
           })
         )
         .subscribe(() => {
-          this.removeAccessToken();
+          this.setAsLoggedOut();
           resolve(true);
         });
     });
   }
 
-  private removeAccessToken() {
-    this.accessToken = null;
-    localStorage.removeItem('accessToken');
+  private setAsLoggedOut() {
     this.logged.next(null);
   }
 
-  private checkAccessToken(accessToken: string | null) {
+  private checkCurrentWithApi() {
     return new Promise<User>((resolve, reject) => {
-      if (!accessToken) {
-        this.removeAccessToken();
-        reject();
-        return;
-      }
-
-      this.accessToken = accessToken;
-      localStorage.setItem('accessToken', this.accessToken);
-
       this.authService.authUserRead()
         .pipe(
           catchError((res) => {
-            this.accessToken = null;
-            localStorage.removeItem('accessToken');
             this.logged.next(null);
             reject(res);
             return of();
@@ -220,13 +200,18 @@ export class AuthHttpInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let headers: HttpHeaders = new HttpHeaders();
-    let token = this.auth.token;
-    if (token) {
-      headers = request.headers.set('Authorization', 'Token ' + token);
+    let csrfToken = getCookieValue('csrftoken');
+    if (csrfToken) {
+      headers = request.headers.set('X-CSRFToken', csrfToken);
     }
     request = request.clone({
-      headers: headers
+      withCredentials: true,
+      headers: headers,
     });
     return next.handle(request);
   }
 }
+
+const getCookieValue = (name: string) => (
+  document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || ''
+);

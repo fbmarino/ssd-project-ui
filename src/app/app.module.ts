@@ -77,7 +77,7 @@ import {ConfirmDialogComponent} from "./shared/confirm-dialog/confirm-dialog.com
     },
     {
       provide: API_BASE_PATH,
-      useValue: 'http://127.0.0.1:8000/api/v1'
+      useValue: 'http://' + window.location.hostname + ':8000/api/v1'
     }
   ],
   bootstrap: [AppComponent]
