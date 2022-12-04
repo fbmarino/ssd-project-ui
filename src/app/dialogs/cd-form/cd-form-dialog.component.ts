@@ -5,8 +5,10 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {AuthManager} from "../../services/auth/auth";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {CD} from "../../services/api/model/cd";
-import {FormErrorsHandler} from "../../shared/form";
-import {catchError, of} from "rxjs";
+import {FormErrorsHandler} from "../../shared/form/form-error-handler";
+import {catchError, map, Observable, of, startWith} from "rxjs";
+import Ean from 'ean-generator';
+import {MUSIC_GENRES} from "../../shared/constants/genres";
 
 export interface CdFormDialogResult {
   cd: CD;
@@ -23,6 +25,8 @@ export class CdFormDialogComponent implements OnInit {
   form!: FormGroup;
   formErrors!: FormErrorsHandler;
   loading = false;
+  defaultGenres: string[] = MUSIC_GENRES;
+  filteredGenres!: Observable<string[]>;
 
   constructor(private readonly dialogRef: MatDialogRef<CdFormDialogComponent>,
               private readonly authService: AuthService,
@@ -36,6 +40,11 @@ export class CdFormDialogComponent implements OnInit {
     }
   }
 
+  private _filterGenre(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.defaultGenres.filter(genre => genre.toLowerCase().includes(filterValue));
+  }
+
   ngOnInit(): void {
     this.form = new FormGroup({
       name: new FormControl(''),
@@ -45,7 +54,12 @@ export class CdFormDialogComponent implements OnInit {
       ean_code: new FormControl(''),
       price: new FormControl(''),
     });
+    this.filteredGenres = this.form.controls['genre'].valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterGenre(value || '')),
+    );
     this.formErrors = new FormErrorsHandler(this.form);
+
     if (this.id > 0) {
       this.musicsService.musicsRead(this.id)
         .pipe(
@@ -70,6 +84,15 @@ export class CdFormDialogComponent implements OnInit {
           this.form.controls['price'].patchValue(cd.price);
         });
     }
+  }
+
+  generateRandomEan() {
+    let ean = new Ean(['030', '031', '039']);
+    this.form.controls['ean_code'].patchValue(ean.create());
+  }
+
+  resetGenre() {
+    this.form.controls['genre'].patchValue('');
   }
 
   submit() {

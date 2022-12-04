@@ -32,6 +32,7 @@ import { CdsListComponent } from './pages/cds-list/cds-list.component';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {CdLogoComponent} from "./shared/cd-logo/cd-logo.component";
 import {ConfirmDialogComponent} from "./shared/confirm-dialog/confirm-dialog.component";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import {ConfirmDialogComponent} from "./shared/confirm-dialog/confirm-dialog.com
     MatFormFieldModule,
     MatSlideToggleModule,
     MatProgressSpinnerModule,
+    MatAutocompleteModule,
     MatDialogModule,
     MatSnackBarModule,
     MatTooltipModule,

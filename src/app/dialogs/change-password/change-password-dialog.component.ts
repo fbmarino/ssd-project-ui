@@ -4,7 +4,7 @@ import {AuthService, PasswordResetConfirm} from "../../services/api";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {AuthManager} from "../../services/auth/auth";
 import {MatDialogRef} from "@angular/material/dialog";
-import {FormErrorsHandler} from "../../shared/form";
+import {FormErrorsHandler} from "../../shared/form/form-error-handler";
 
 @Component({
   selector: 'login-dialog',
