@@ -1,8 +1,11 @@
 # Music Library - Angular frontend
 
-## Install
+## Run dev server
 
-Run `npm install` and `npm install -g @angular/cli`
+1) `npm install`
+2) `npm install -g @angular/cli`
+3) `ng serve`
+4) Open http://localhost:4200/ in a browser
 
 ## Development server
 
