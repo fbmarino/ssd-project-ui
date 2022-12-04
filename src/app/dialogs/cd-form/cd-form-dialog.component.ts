@@ -85,7 +85,7 @@ export class CdFormDialogComponent implements OnInit {
       ean_code: this.form.value.ean_code,
       price: this.form.value.price,
       price_currency: 'EUR',
-      published_by: 4
+      published_by: this.auth.currentUser?.id
     };
     let obs;
     if (this.id > 0) {
