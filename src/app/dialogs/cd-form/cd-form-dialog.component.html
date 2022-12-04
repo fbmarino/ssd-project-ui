@@ -12,8 +12,8 @@
       <mat-form-field class="w-full">
         <mat-label>Name</mat-label>
         <input type="text" matInput placeholder="Nuntereggae più" formControlName="name">
-        <mat-error *ngIf="!!form.get('name')?.errors?.['serverError']">
-          {{form.get('name')?.errors?.['serverError']}}
+        <mat-error *ngIf="formErrors.isInvalid('name')">
+          {{formErrors.getErrorMessage('name')}}
         </mat-error>
       </mat-form-field>
     </div>
@@ -21,8 +21,8 @@
       <mat-form-field class="w-full">
         <mat-label>Artist</mat-label>
         <input type="text" matInput placeholder="Rino Gaetano" formControlName="artist">
-        <mat-error *ngIf="!!form.get('artist')?.errors?.['serverError']">
-          {{form.get('artist')?.errors?.['serverError']}}
+        <mat-error *ngIf="formErrors.isInvalid('artist')">
+          {{formErrors.getErrorMessage('artist')}}
         </mat-error>
       </mat-form-field>
     </div>
@@ -31,8 +31,8 @@
         <mat-form-field class="w-full">
           <mat-label>Genre</mat-label>
           <input type="text" matInput placeholder="Pop" formControlName="genre">
-          <mat-error *ngIf="!!form.get('genre')?.errors?.['serverError']">
-            {{form.get('genre')?.errors?.['serverError']}}
+          <mat-error *ngIf="formErrors.isInvalid('genre')">
+            {{formErrors.getErrorMessage('genre')}}
           </mat-error>
         </mat-form-field>
       </div>
@@ -40,8 +40,8 @@
         <mat-form-field class="w-full">
           <mat-label>Record Company</mat-label>
           <input type="text" matInput placeholder="RCA Italiana" formControlName="record_company">
-          <mat-error *ngIf="!!form.get('record_company')?.errors?.['serverError']">
-            {{form.get('record_company')?.errors?.['serverError']}}
+          <mat-error *ngIf="formErrors.isInvalid('record_company')">
+            {{formErrors.getErrorMessage('record_company')}}
           </mat-error>
         </mat-form-field>
       </div>
@@ -51,8 +51,8 @@
         <mat-form-field class="w-full">
           <mat-label>EAN Code</mat-label>
           <input type="text" matInput placeholder="978020137962" formControlName="ean_code">
-          <mat-error *ngIf="!!form.get('ean_code')?.errors?.['serverError']">
-            {{form.get('ean_code')?.errors?.['serverError']}}
+          <mat-error *ngIf="formErrors.isInvalid('ean_code')">
+            {{formErrors.getErrorMessage('ean_code')}}
           </mat-error>
         </mat-form-field>
       </div>
@@ -61,13 +61,13 @@
           <mat-label>Price</mat-label>
           <input type="text" matInput placeholder="10.99" formControlName="price">
           <span matSuffix="" class="mr-4">€</span>
-          <mat-error *ngIf="!!form.get('price')?.errors?.['serverError']">
-            {{form.get('price')?.errors?.['serverError']}}
+          <mat-error *ngIf="formErrors.isInvalid('price')">
+            {{formErrors.getErrorMessage('price')}}
           </mat-error>
         </mat-form-field>
       </div>
     </div>
-    <mat-error *ngFor="let e of errors" class="w-full mt-2">
+    <mat-error *ngFor="let e of formErrors.nonFieldErrors" class="w-full mt-2">
       {{e}}
     </mat-error>
     <div class="w-full mt-8">

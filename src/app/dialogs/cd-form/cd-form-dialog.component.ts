@@ -5,7 +5,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {AuthManager} from "../../services/auth/auth";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {CD} from "../../services/api/model/cd";
-import {handleFormHttpError} from "../../shared/errorHandlers";
+import {FormErrorsHandler} from "../../shared/form";
 import {catchError, of} from "rxjs";
 
 export interface CdFormDialogResult {
@@ -21,7 +21,7 @@ export class CdFormDialogComponent implements OnInit {
   id = 0;
   preloading = false;
   form!: FormGroup;
-  errors: string[] = [];
+  formErrors!: FormErrorsHandler;
   loading = false;
 
   constructor(private readonly dialogRef: MatDialogRef<CdFormDialogComponent>,
@@ -45,6 +45,7 @@ export class CdFormDialogComponent implements OnInit {
       ean_code: new FormControl(''),
       price: new FormControl(''),
     });
+    this.formErrors = new FormErrorsHandler(this.form);
     if (this.id > 0) {
       this.musicsService.musicsRead(this.id)
         .pipe(
@@ -73,7 +74,7 @@ export class CdFormDialogComponent implements OnInit {
 
   submit() {
     this.form.markAllAsTouched();
-    this.errors = [];
+    this.formErrors.resetNonFieldErrors();
     this.loading = true;
 
     let data = {
@@ -96,7 +97,7 @@ export class CdFormDialogComponent implements OnInit {
       .pipe(
         catchError((response) => {
           this.loading = false;
-          handleFormHttpError(response, this.form, this.errors);
+          this.formErrors.onHttpError(response);
           return of();
         })
       )

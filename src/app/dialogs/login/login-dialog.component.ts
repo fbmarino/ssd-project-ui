@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../services/api";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {AuthManager, User} from "../../services/auth/auth";
 import {MatDialogRef} from "@angular/material/dialog";
-import {handleFormHttpError} from "../../shared/errorHandlers";
+import {FormErrorsHandler} from "../../shared/form";
 
 @Component({
   selector: 'login-dialog',
@@ -13,7 +13,7 @@ import {handleFormHttpError} from "../../shared/errorHandlers";
 })
 export class LoginDialogComponent implements OnInit {
   form!: FormGroup;
-  errors: string[] = [];
+  formErrors!: FormErrorsHandler;
   loading = false;
 
   constructor(private readonly dialogRef: MatDialogRef<LoginDialogComponent>,
@@ -24,9 +24,10 @@ export class LoginDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      username: new FormControl(''),
-      password: new FormControl(''),
+      username: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required]),
     });
+    this.formErrors = new FormErrorsHandler(this.form);
   }
 
   register() {
@@ -36,7 +37,7 @@ export class LoginDialogComponent implements OnInit {
 
   submit() {
     this.form.markAllAsTouched();
-    this.errors = [];
+    this.formErrors.resetNonFieldErrors();
     this.loading = true;
     this.auth.login({
       email: '',
@@ -50,7 +51,7 @@ export class LoginDialogComponent implements OnInit {
       this.dialogRef.close();
     }).catch((res) => {
       this.loading = false;
-      handleFormHttpError(res, this.form, this.errors);
+      this.formErrors.onHttpError(res);
     });
   }
 }

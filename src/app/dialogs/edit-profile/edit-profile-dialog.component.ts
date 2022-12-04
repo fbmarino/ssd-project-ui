@@ -4,7 +4,7 @@ import {AuthService, UserDetails} from "../../services/api";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {AuthManager} from "../../services/auth/auth";
 import {MatDialogRef} from "@angular/material/dialog";
-import {handleFormHttpError} from "../../shared/errorHandlers";
+import {FormErrorsHandler} from "../../shared/form";
 
 @Component({
   selector: 'login-dialog',
@@ -13,7 +13,7 @@ import {handleFormHttpError} from "../../shared/errorHandlers";
 })
 export class EditProfileDialogComponent implements OnInit {
   form!: FormGroup;
-  errors: string[] = [];
+  formErrors!: FormErrorsHandler;
   loading = false;
 
   constructor(private readonly dialogRef: MatDialogRef<EditProfileDialogComponent>,
@@ -32,11 +32,12 @@ export class EditProfileDialogComponent implements OnInit {
       last_name: new FormControl(user.lastName),
       username: new FormControl({ value: user.username, disabled: true }),
     });
+    this.formErrors = new FormErrorsHandler(this.form);
   }
 
   submit() {
     this.form.markAllAsTouched();
-    this.errors = [];
+    this.formErrors.resetNonFieldErrors();
     this.loading = true;
     this.auth.editProfile({
       first_name: this.form.value.first_name,
@@ -50,7 +51,7 @@ export class EditProfileDialogComponent implements OnInit {
       this.dialogRef.close();
     }).catch((res) => {
       this.loading = false;
-      handleFormHttpError(res, this.form, this.errors);
+      this.formErrors.onHttpError(res);
     });
   }
 }

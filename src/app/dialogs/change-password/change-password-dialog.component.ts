@@ -4,7 +4,7 @@ import {AuthService, PasswordResetConfirm} from "../../services/api";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {AuthManager} from "../../services/auth/auth";
 import {MatDialogRef} from "@angular/material/dialog";
-import {handleFormHttpError} from "../../shared/errorHandlers";
+import {FormErrorsHandler} from "../../shared/form";
 
 @Component({
   selector: 'login-dialog',
@@ -13,7 +13,7 @@ import {handleFormHttpError} from "../../shared/errorHandlers";
 })
 export class ChangePasswordDialogComponent implements OnInit {
   form!: FormGroup;
-  errors: string[] = [];
+  formErrors!: FormErrorsHandler;
   loading = false;
 
   constructor(private readonly dialogRef: MatDialogRef<ChangePasswordDialogComponent>,
@@ -27,11 +27,12 @@ export class ChangePasswordDialogComponent implements OnInit {
       new_password1: new FormControl(''),
       new_password2: new FormControl(''),
     });
+    this.formErrors = new FormErrorsHandler(this.form);
   }
 
   submit() {
     this.form.markAllAsTouched();
-    this.errors = [];
+    this.formErrors.resetNonFieldErrors();
     this.loading = true;
     this.auth.changePassword({
       new_password1: this.form.value.new_password1,
@@ -44,7 +45,7 @@ export class ChangePasswordDialogComponent implements OnInit {
       this.dialogRef.close();
     }).catch((res) => {
       this.loading = false;
-      handleFormHttpError(res, this.form, this.errors);
+      this.formErrors.onHttpError(res);
     });
   }
 }

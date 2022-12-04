@@ -8,8 +8,8 @@
       <mat-form-field class="w-full">
         <mat-label>Username</mat-label>
         <input type="username" matInput placeholder="" formControlName="username">
-        <mat-error *ngIf="!!form.get('username')?.errors?.['serverError']">
-          {{form.get('username')?.errors?.['serverError']}}
+        <mat-error *ngIf="formErrors.isInvalid('username')">
+          {{formErrors.getErrorMessage('username')}}
         </mat-error>
       </mat-form-field>
     </div>
@@ -17,8 +17,8 @@
       <mat-form-field class="w-full">
         <mat-label>Email</mat-label>
         <input type="email" matInput placeholder="" formControlName="email">
-        <mat-error *ngIf="!!form.get('email')?.errors?.['serverError']">
-          {{form.get('email')?.errors?.['serverError']}}
+        <mat-error *ngIf="formErrors.isInvalid('email')">
+          {{formErrors.getErrorMessage('email')}}
         </mat-error>
       </mat-form-field>
     </div>
@@ -26,8 +26,8 @@
       <mat-form-field class="w-full">
         <mat-label>Password</mat-label>
         <input type="password" matInput placeholder="" formControlName="password1">
-        <mat-error *ngIf="!!form.get('password1')?.errors?.['serverError']">
-          {{form.get('password1')?.errors?.['serverError']}}
+        <mat-error *ngIf="formErrors.isInvalid('password1')">
+          {{formErrors.getErrorMessage('password1')}}
         </mat-error>
       </mat-form-field>
     </div>
@@ -35,18 +35,18 @@
       <mat-form-field class="w-full">
         <mat-label>Password confirm</mat-label>
         <input type="password" matInput placeholder="" formControlName="password2">
-        <mat-error *ngIf="!!form.get('password2')?.errors?.['serverError']">
-          {{form.get('password2')?.errors?.['serverError']}}
+        <mat-error *ngIf="formErrors.isInvalid('password2')">
+          {{formErrors.getErrorMessage('password2')}}
         </mat-error>
       </mat-form-field>
     </div>
     <div class="mt-6">
       <mat-slide-toggle formControlName="group">I want to be a publisher user</mat-slide-toggle>
-      <mat-error *ngIf="!!form.get('group')?.errors?.['serverError']">
-        {{form.get('group')?.errors?.['serverError']}}
+      <mat-error *ngIf="formErrors.isInvalid('group')">
+        {{formErrors.getErrorMessage('group')}}
       </mat-error>
     </div>
-    <mat-error *ngFor="let e of errors" class="mt-2">
+    <mat-error *ngFor="let e of formErrors.nonFieldErrors" class="mt-6">
       {{e}}
     </mat-error>
     <div class="mt-8">

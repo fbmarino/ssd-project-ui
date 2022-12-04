@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService, Registration} from "../../services/api";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {AuthManager, User} from "../../services/auth/auth";
 import {MatDialogRef} from "@angular/material/dialog";
-import {handleFormHttpError} from "../../shared/errorHandlers";
+import {FormErrorsHandler} from "../../shared/form";
 
 @Component({
   selector: 'register-dialog',
@@ -13,7 +13,7 @@ import {handleFormHttpError} from "../../shared/errorHandlers";
 })
 export class RegisterDialogComponent implements OnInit {
   form!: FormGroup;
-  errors: string[] = [];
+  formErrors!: FormErrorsHandler;
   loading = false;
 
   constructor(private readonly dialogRef: MatDialogRef<RegisterDialogComponent>,
@@ -24,12 +24,13 @@ export class RegisterDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      email: new FormControl(''),
-      username: new FormControl(''),
-      password1: new FormControl(''),
-      password2: new FormControl(''),
+      email: new FormControl('', [Validators.required]),
+      username: new FormControl('', [Validators.required]),
+      password1: new FormControl('', [Validators.required]),
+      password2: new FormControl('', [Validators.required]),
       group: new FormControl(true)
     });
+    this.formErrors = new FormErrorsHandler(this.form);
   }
 
   login() {
@@ -39,7 +40,7 @@ export class RegisterDialogComponent implements OnInit {
 
   submit() {
     this.form.markAllAsTouched();
-    this.errors = [];
+    this.formErrors.resetNonFieldErrors();
     this.loading = true;
     let data: Registration = {
       email: this.form.value.email,
@@ -58,7 +59,7 @@ export class RegisterDialogComponent implements OnInit {
       this.dialogRef.close();
     }).catch((res) => {
       this.loading = false;
-      handleFormHttpError(res, this.form, this.errors);
+      this.formErrors.onHttpError(res);
     });
   }
 }
