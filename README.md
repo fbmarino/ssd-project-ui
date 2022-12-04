@@ -1,6 +1,6 @@
 # Music Library - Angular frontend
 
-## Run dev server
+## Run development server
 
 1) `npm install`
 2) `npm install -g @angular/cli`
