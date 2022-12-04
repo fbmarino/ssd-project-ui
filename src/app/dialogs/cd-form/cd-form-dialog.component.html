@@ -32,11 +32,10 @@
           <mat-label>Genre</mat-label>
           <input type="text"
                  placeholder="Pick one or type"
-                 aria-label="Number"
                  matInput
                  formControlName="genre"
                  [matAutocomplete]="auto">
-          <button matSuffix mat-icon-button aria-label="Clear" (click)="resetGenre()" *ngIf="form.value.genre!==''" matTooltip="Reset genre">
+          <button type="button" matSuffix mat-icon-button (click)="resetGenre()" *ngIf="form.value.genre!==''" matTooltip="Reset genre">
             <mat-icon>close</mat-icon>
           </button>
           <mat-autocomplete #auto="matAutocomplete">
@@ -64,7 +63,7 @@
         <mat-form-field class="w-full">
           <mat-label>EAN Code</mat-label>
           <input type="text" matInput placeholder="000000000000" formControlName="ean_code">
-          <button matSuffix mat-icon-button aria-label="Clear" (click)="generateRandomEan()" *ngIf="form.value.ean_code===''" matTooltip="Set a random EAN Code">
+          <button type="button" matSuffix mat-icon-button (click)="generateRandomEan()" *ngIf="form.value.ean_code===''" matTooltip="Set a random EAN Code">
             <mat-icon>bolt</mat-icon>
           </button>
           <mat-error *ngIf="formErrors.isInvalid('ean_code')">
