@@ -195,9 +195,6 @@ export class AuthManager {
 
 @Injectable()
 export class AuthHttpInterceptor implements HttpInterceptor {
-  constructor(private readonly auth: AuthManager) {
-  }
-
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let headers: HttpHeaders = new HttpHeaders();
     let csrfToken = getCookieValue('csrftoken');
