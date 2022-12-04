@@ -2,7 +2,7 @@
 
 ## Install
 
-Run `npm install`
+Run `npm install` and `npm install -g @angular/cli`
 
 ## Development server
 
