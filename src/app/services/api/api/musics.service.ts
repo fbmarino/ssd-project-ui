@@ -12,7 +12,7 @@
 /* tslint:disable:no-unused-variable member-ordering */
 
 import { Inject, Injectable, Optional }                      from '@angular/core';
-import { HttpClient, HttpHeaders, HttpResponse, HttpEvent }                           from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpResponse, HttpEvent, HttpParams} from '@angular/common/http';
 
 import { Observable }                                        from 'rxjs';
 
@@ -20,6 +20,7 @@ import { CD } from '../model/cd';
 
 import { BASE_PATH}                     from '../variables';
 import { Configuration }                                     from '../configuration';
+import {CustomHttpUrlEncodingCodec} from "../encoder";
 
 
 @Injectable()
@@ -56,14 +57,14 @@ export class MusicsService {
 
     /**
      *
-     *
+     * @param publishedBy published by username
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public musicsByPublishedByList(observe?: 'body', reportProgress?: boolean): Observable<Array<CD>>;
-    public musicsByPublishedByList(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<CD>>>;
-    public musicsByPublishedByList(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<CD>>>;
-    public musicsByPublishedByList(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public musicsByPublishedByList(publishedBy?: 'string', observe?: 'body', reportProgress?: boolean): Observable<Array<CD>>;
+    public musicsByPublishedByList(publishedBy?: 'string', observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<CD>>>;
+    public musicsByPublishedByList(publishedBy?: 'string', observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<CD>>>;
+    public musicsByPublishedByList(publishedBy?: 'string', observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -85,9 +86,17 @@ export class MusicsService {
         const consumes: string[] = [
             'application/json'
         ];
+
+        let queryParameters = new HttpParams({
+          encoder: new CustomHttpUrlEncodingCodec(),
+        });
+        if (publishedBy !== undefined && publishedBy !== null) {
+          queryParameters = queryParameters.set('publishedby', <any>name);
+        }
 
         return this.httpClient.get<Array<CD>>(`${this.basePath}/musics/by_published_by`,
             {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -98,14 +107,14 @@ export class MusicsService {
 
     /**
      *
-     *
+     * @param artist artist name
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public musicsByartistList(observe?: 'body', reportProgress?: boolean): Observable<Array<CD>>;
-    public musicsByartistList(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<CD>>>;
-    public musicsByartistList(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<CD>>>;
-    public musicsByartistList(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public musicsByartistList(artist?: 'string', observe?: 'body', reportProgress?: boolean): Observable<Array<CD>>;
+    public musicsByartistList(artist?: 'string', observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<CD>>>;
+    public musicsByartistList(artist?: 'string', observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<CD>>>;
+    public musicsByartistList(artist?: 'string', observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -127,9 +136,17 @@ export class MusicsService {
         const consumes: string[] = [
             'application/json'
         ];
+
+        let queryParameters = new HttpParams({
+          encoder: new CustomHttpUrlEncodingCodec(),
+        });
+        if (artist !== undefined && artist !== null) {
+          queryParameters = queryParameters.set('artist', <any>artist);
+        }
 
         return this.httpClient.get<Array<CD>>(`${this.basePath}/musics/byartist`,
             {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -140,14 +157,14 @@ export class MusicsService {
 
     /**
      *
-     *
+     * @param name cd name
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public musicsBynameList(observe?: 'body', reportProgress?: boolean): Observable<Array<CD>>;
-    public musicsBynameList(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<CD>>>;
-    public musicsBynameList(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<CD>>>;
-    public musicsBynameList(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public musicsBynameList(name?: 'string', observe?: 'body', reportProgress?: boolean): Observable<Array<CD>>;
+    public musicsBynameList(name?: 'string', observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<CD>>>;
+    public musicsBynameList(name?: 'string', observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<CD>>>;
+    public musicsBynameList(name?: 'string', observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -170,8 +187,16 @@ export class MusicsService {
             'application/json'
         ];
 
+        let queryParameters = new HttpParams({
+          encoder: new CustomHttpUrlEncodingCodec(),
+        });
+        if (name !== undefined && name !== null) {
+          queryParameters = queryParameters.set('name', <any>name);
+        }
+
         return this.httpClient.get<Array<CD>>(`${this.basePath}/musics/byname`,
             {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

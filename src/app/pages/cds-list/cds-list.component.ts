@@ -1,11 +1,14 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
 import {CdFormDialogComponent, CdFormDialogResult} from "../../dialogs/cd-form/cd-form-dialog.component";
 import {MusicsService} from "../../services/api";
 import {ConfirmDialogComponent, ConfirmDialogData} from "../../shared/confirm-dialog/confirm-dialog.component";
-import {catchError, filter, of} from "rxjs";
+import {catchError, filter, Observable, of} from "rxjs";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {CD} from "../../services/api/model/cd";
+import {MatChipListbox} from "@angular/material/chips";
+import {FormControl, FormGroup} from "@angular/forms";
+import {HttpResponse} from "@angular/common/http";
 
 export interface CDListItem {
   id: number;
@@ -30,10 +33,67 @@ export interface CDListItem {
 })
 export class CdsListComponent implements OnInit {
   items: CDListItem[] = [];
+  currentFilter: string = 'none';
+  @ViewChild('filterChipList') filterChipList!: MatChipListbox;
+  filterForm!: FormGroup;
+  filterTimeout!: any;
 
   constructor(private readonly dialog: MatDialog,
               private readonly musicsService: MusicsService,
               private readonly snackbar: MatSnackBar) {
+  }
+
+  ngOnInit(): void {
+    this.filterForm = new FormGroup({
+      'cd_name': new FormControl(''),
+      'artist_name': new FormControl(''),
+      'publisher_username': new FormControl('')
+    });
+    this.filterForm.controls['cd_name']
+    this.loadItemsByCurrentFilter();
+  }
+
+  ngAfterViewInit() {
+    this.filterChipList.change.subscribe(e => {
+      if (!e.value) {
+        this.filterChipList._setSelectionByValue('none');
+      } else {
+        this.currentFilter = e.value;
+      }
+      this.loadItemsByCurrentFilterWithoutTimeout();
+    })
+  }
+
+  filterInputUpdated() {
+    this.loadItemsByCurrentFilterWithTimeout();
+  }
+
+  loadItemsByCurrentFilterWithoutTimeout() {
+    clearTimeout(this.filterTimeout);
+    this.loadItemsByCurrentFilter();
+  }
+
+  loadItemsByCurrentFilterWithTimeout() {
+    clearTimeout(this.filterTimeout);
+    this.filterTimeout = setTimeout(() => this.loadItemsByCurrentFilter(), 300);
+  }
+
+  loadItemsByCurrentFilter() {
+    if (this.currentFilter === 'none') {
+      this.loadItems(this.musicsService.musicsList());
+    } else if (this.currentFilter === 'cd_name') {
+      this.loadItems(this.musicsService.musicsBynameList(this.filterForm.value.cd_name));
+    } else if (this.currentFilter === 'artist_name') {
+      this.loadItems(this.musicsService.musicsByartistList(this.filterForm.value.artist_name));
+    } else if (this.currentFilter === 'publisher_username') {
+      this.loadItems(this.musicsService.musicsByPublishedByList(this.filterForm.value.publisher_name));
+    }
+  }
+
+  private loadItems(obs: Observable<Array<CD>>) {
+    obs.subscribe(e => {
+      this.items = e.reverse().map(cdi => CdsListComponent.cdToCdListItem(cdi));
+    });
   }
 
   openCreateCdDialog() {
@@ -96,12 +156,6 @@ export class CdsListComponent implements OnInit {
           });
         });
     });
-  }
-
-  ngOnInit(): void {
-    this.musicsService.musicsList().subscribe(e => {
-      this.items = e.reverse().map(cdi => CdsListComponent.cdToCdListItem(cdi));
-    })
   }
 
   private static cdToCdListItem(e: CD) {

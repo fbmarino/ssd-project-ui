@@ -33,6 +33,7 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {CdLogoComponent} from "./shared/cd-logo/cd-logo.component";
 import {ConfirmDialogComponent} from "./shared/confirm-dialog/confirm-dialog.component";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {MatChipsModule} from "@angular/material/chips";
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
     MatButtonModule,
     MatCardModule,
     MatFormFieldModule,
+    MatChipsModule,
     MatSlideToggleModule,
     MatProgressSpinnerModule,
     MatAutocompleteModule,

@@ -1,10 +1,57 @@
-<div class="flex items-center mb-6 justify-between">
+<div class="flex items-center mb-4 justify-between">
   <h1 class="mb-0-i">CDs Library</h1>
   <button (click)="openCreateCdDialog()" mat-mini-fab color="accent" matTooltip="Add a CD">
     <mat-icon>add</mat-icon>
   </button>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+<div class="mb-8" [formGroup]="filterForm" *ngIf="filterForm">
+  <div class="flex gap-x-6">
+    <div class="flex items-center gap-x-3">
+      <mat-icon class="material-icons-outlined icon-grey">filter_list</mat-icon>
+      <span class="text-lg font-light">Filter by:</span>
+    </div>
+    <div>
+      <mat-chip-listbox aria-label="Filter type selection" #filterChipList>
+        <mat-chip-option color="primary" selected value="none">
+          No filter (show all CDs)
+        </mat-chip-option>
+        <mat-chip-option color="warn" value="cd_name">
+          <mat-icon matChipAvatar class="material-icons-outlined">music_note</mat-icon>
+          CD name
+        </mat-chip-option>
+        <mat-chip-option color="primary" value="artist_name">
+          <mat-icon matChipAvatar class="material-icons-outlined">edit_note</mat-icon>
+          Artist name
+        </mat-chip-option>
+        <mat-chip-option color="accent" value="publisher_username">
+          <mat-icon matChipAvatar class="material-icons-outlined">person</mat-icon>
+          Publisher username
+        </mat-chip-option>
+      </mat-chip-listbox>
+    </div>
+  </div>
+  <div *ngIf="currentFilter === 'cd_name'" class="mt-4">
+    <mat-form-field class="w-full">
+      <mat-label>CD Name…</mat-label>
+      <input type="text" matInput placeholder="" formControlName="cd_name" (input)="filterInputUpdated()">
+    </mat-form-field>
+  </div>
+  <div *ngIf="currentFilter === 'artist_name'" class="mt-4">
+    <mat-form-field class="w-full">
+      <mat-label>Artist name…</mat-label>
+      <input type="text" matInput placeholder="" formControlName="artist_name" (input)="filterInputUpdated()">
+    </mat-form-field>
+  </div>
+  <div *ngIf="currentFilter === 'publisher_username'" class="mt-4">
+    <mat-form-field class="w-full">
+      <mat-label>Publisher username…</mat-label>
+      <input type="text" matInput placeholder="" formControlName="publisher_username" (input)="filterInputUpdated()">
+    </mat-form-field>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6">
   <ng-container *ngFor="let item of items">
     <div>
       <mat-card class="p-3">
