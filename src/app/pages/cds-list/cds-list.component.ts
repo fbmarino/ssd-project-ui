@@ -79,14 +79,14 @@ export class CdsListComponent implements OnInit {
   }
 
   loadItemsByCurrentFilter() {
-    if (this.currentFilter === 'none') {
-      this.loadItems(this.musicsService.musicsList());
-    } else if (this.currentFilter === 'cd_name') {
+    if (this.currentFilter === 'cd_name' && this.filterForm.value.cd_name) {
       this.loadItems(this.musicsService.musicsBynameList(this.filterForm.value.cd_name));
-    } else if (this.currentFilter === 'artist_name') {
+    } else if (this.currentFilter === 'artist_name' && this.filterForm.value.artist_name) {
       this.loadItems(this.musicsService.musicsByartistList(this.filterForm.value.artist_name));
-    } else if (this.currentFilter === 'publisher_username') {
-      this.loadItems(this.musicsService.musicsByPublishedByList(this.filterForm.value.publisher_name));
+    } else if (this.currentFilter === 'publisher_username' && this.filterForm.value.publisher_username) {
+      this.loadItems(this.musicsService.musicsByPublishedByList(this.filterForm.value.publisher_username));
+    } else {
+      this.loadItems(this.musicsService.musicsList());
     }
   }
 
