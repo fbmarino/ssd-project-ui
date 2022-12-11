@@ -36,6 +36,9 @@ export class LoginDialogComponent implements OnInit {
   }
 
   submit() {
+    if (!this.form.valid) {
+      return;
+    }
     this.form.markAllAsTouched();
     this.formErrors.resetNonFieldErrors();
     this.loading = true;

@@ -91,7 +91,7 @@ export class MusicsService {
           encoder: new CustomHttpUrlEncodingCodec(),
         });
         if (publishedBy !== undefined && publishedBy !== null) {
-          queryParameters = queryParameters.set('publishedby', <any>name);
+          queryParameters = queryParameters.set('publishedby', <any>publishedBy);
         }
 
         return this.httpClient.get<Array<CD>>(`${this.basePath}/musics/by_published_by`,

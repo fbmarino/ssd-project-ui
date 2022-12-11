@@ -27,6 +27,7 @@ export class CdFormDialogComponent implements OnInit {
   loading = false;
   defaultGenres: string[] = MUSIC_GENRES;
   filteredGenres!: Observable<string[]>;
+  publishAsText: string;
 
   constructor(private readonly dialogRef: MatDialogRef<CdFormDialogComponent>,
               private readonly authService: AuthService,
@@ -37,6 +38,11 @@ export class CdFormDialogComponent implements OnInit {
     if (data && 'id' in data) {
       this.preloading = true;
       this.id = data.id;
+    }
+    if (this.auth.currentUser) {
+      this.publishAsText = `Publish as ${this.auth.currentUser.username}`;
+    } else {
+      this.publishAsText = "Publish as guest (not logged in)";
     }
   }
 

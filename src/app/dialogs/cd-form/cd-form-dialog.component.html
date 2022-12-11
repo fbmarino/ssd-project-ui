@@ -85,6 +85,9 @@
     <mat-error *ngFor="let e of formErrors.nonFieldErrors" class="w-full mt-2">
       {{e}}
     </mat-error>
+    <div class="w-full mt-6 mx-1">
+      {{publishAsText}}
+    </div>
     <div class="w-full mt-8">
       <button mat-raised-button color="primary" class="w-full">
         <mat-spinner *ngIf="loading" color="accent" [diameter]="20"></mat-spinner>

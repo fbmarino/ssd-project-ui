@@ -16,7 +16,7 @@
     <div class="mt-6">
       <mat-form-field class="w-full">
         <mat-label>Password</mat-label>
-        <input type="password" matInput placeholder="" formControlName="password">
+        <input type="password" matInput placeholder="" formControlName="password" maxlength="128">
         <mat-error *ngIf="formErrors.isInvalid('password')">
           {{formErrors.getErrorMessage('password')}}
         </mat-error>
