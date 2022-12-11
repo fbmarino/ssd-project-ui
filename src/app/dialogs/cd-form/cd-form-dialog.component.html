@@ -85,7 +85,7 @@
     <mat-error *ngFor="let e of formErrors.nonFieldErrors" class="w-full mt-2">
       {{e}}
     </mat-error>
-    <div class="w-full mt-6 mx-1">
+    <div class="w-full mt-6 mx-1" *ngIf="!id">
       {{publishAsText}}
     </div>
     <div class="w-full mt-8">
