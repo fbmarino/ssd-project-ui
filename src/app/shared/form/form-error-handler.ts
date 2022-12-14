@@ -8,7 +8,9 @@ export class FormErrorsHandler {
 
   resetAllErrors() {
     this.nonFieldErrors = [];
-    this.form.setErrors(null);
+    for (let k in this.form.controls) {
+      this.form.controls[k].updateValueAndValidity();
+    }
   }
 
   isInvalid(formControlName: string) {
