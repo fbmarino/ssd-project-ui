@@ -14,6 +14,9 @@ export class AppComponent {
   }
 
   ngOnInit() {
+    window.addEventListener("unhandledrejection", (event) => {
+      console.log(event.reason);
+    });
     this.auth.userChangeObservable.subscribe(user => {
       this.loading = false;
     });
