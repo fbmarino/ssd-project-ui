@@ -26,37 +26,35 @@
         </mat-error>
       </mat-form-field>
     </div>
-    <div class="flex gap-x-4">
-      <div class="w-full">
-        <mat-form-field class="w-full">
-          <mat-label>Genre</mat-label>
-          <input type="text"
-                 placeholder="Pick one or type"
-                 matInput
-                 formControlName="genre"
-                 [matAutocomplete]="auto">
-          <button type="button" matSuffix mat-icon-button (click)="resetGenre()" *ngIf="form.value.genre!==''" matTooltip="Reset genre">
-            <mat-icon>close</mat-icon>
-          </button>
-          <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let option of filteredGenres | async" [value]="option">
-              {{option}}
-            </mat-option>
-          </mat-autocomplete>
-          <mat-error *ngIf="formErrors.isInvalid('genre')">
-            {{formErrors.getErrorMessage('genre')}}
-          </mat-error>
-        </mat-form-field>
-      </div>
-      <div class="w-full">
-        <mat-form-field class="w-full">
-          <mat-label>Record Company</mat-label>
-          <input type="text" matInput placeholder="RCA Italiana" formControlName="record_company">
-          <mat-error *ngIf="formErrors.isInvalid('record_company')">
-            {{formErrors.getErrorMessage('record_company')}}
-          </mat-error>
-        </mat-form-field>
-      </div>
+    <div class="w-full">
+      <mat-form-field class="w-full">
+        <mat-label>Genre</mat-label>
+        <input type="text"
+               placeholder="Pick one or type"
+               matInput
+               formControlName="genre"
+               [matAutocomplete]="auto">
+        <button type="button" matSuffix mat-icon-button (click)="resetGenre()" *ngIf="form.value.genre!==''" matTooltip="Reset genre">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredGenres | async" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="formErrors.isInvalid('genre')">
+          {{formErrors.getErrorMessage('genre')}}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="w-full">
+      <mat-form-field class="w-full">
+        <mat-label>Record Company</mat-label>
+        <input type="text" matInput placeholder="RCA Italiana" formControlName="record_company">
+        <mat-error *ngIf="formErrors.isInvalid('record_company')">
+          {{formErrors.getErrorMessage('record_company')}}
+        </mat-error>
+      </mat-form-field>
     </div>
     <div class="flex gap-x-4">
       <div class="w-1/2">
