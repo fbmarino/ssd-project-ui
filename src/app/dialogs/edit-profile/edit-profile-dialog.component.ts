@@ -37,7 +37,7 @@ export class EditProfileDialogComponent implements OnInit {
 
   submit() {
     this.form.markAllAsTouched();
-    this.formErrors.resetNonFieldErrors();
+    this.formErrors.resetAllErrors();
     this.loading = true;
     this.auth.editProfile({
       first_name: this.form.value.first_name,

@@ -6,8 +6,9 @@ export class FormErrorsHandler {
   constructor(readonly form: FormGroup) {
   }
 
-  resetNonFieldErrors() {
+  resetAllErrors() {
     this.nonFieldErrors = [];
+    this.form.setErrors(null);
   }
 
   isInvalid(formControlName: string) {

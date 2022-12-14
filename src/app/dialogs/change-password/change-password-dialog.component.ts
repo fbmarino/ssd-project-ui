@@ -32,7 +32,7 @@ export class ChangePasswordDialogComponent implements OnInit {
 
   submit() {
     this.form.markAllAsTouched();
-    this.formErrors.resetNonFieldErrors();
+    this.formErrors.resetAllErrors();
     this.loading = true;
     this.auth.changePassword({
       new_password1: this.form.value.new_password1,

@@ -103,7 +103,7 @@ export class CdFormDialogComponent implements OnInit {
 
   submit() {
     this.form.markAllAsTouched();
-    this.formErrors.resetNonFieldErrors();
+    this.formErrors.resetAllErrors();
     this.loading = true;
 
     let data = {

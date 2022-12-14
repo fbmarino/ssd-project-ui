@@ -40,7 +40,7 @@ export class LoginDialogComponent implements OnInit {
       return;
     }
     this.form.markAllAsTouched();
-    this.formErrors.resetNonFieldErrors();
+    this.formErrors.resetAllErrors();
     this.loading = true;
     this.auth.login({
       email: '',

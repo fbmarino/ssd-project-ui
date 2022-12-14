@@ -40,7 +40,7 @@ export class RegisterDialogComponent implements OnInit {
 
   submit() {
     this.form.markAllAsTouched();
-    this.formErrors.resetNonFieldErrors();
+    this.formErrors.resetAllErrors();
     this.loading = true;
     let data: Registration = {
       email: this.form.value.email,
