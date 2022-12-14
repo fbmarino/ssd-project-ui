@@ -1,17 +1,16 @@
 export const MUSIC_GENRES = [
   "Blues",
-  "Brass & Military",
-  "Children's",
+  "Brass and Military",
   "Classical",
   "Electronic",
-  "Folk, World, & Country",
-  "Funk / Soul",
-  "Hip-Hop",
+  "Country",
+  "Funk Soul",
+  "Hip Hop",
   "Jazz",
   "Latin",
-  "Non-Music",
+  "Non Music",
   "Pop",
   "Reggae",
   "Rock",
-  "Stage & Screen"
+  "Stage and Screen"
 ];
