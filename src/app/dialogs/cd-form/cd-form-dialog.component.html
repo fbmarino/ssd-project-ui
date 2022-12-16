@@ -62,7 +62,7 @@
         <mat-form-field class="w-full">
           <mat-label>EAN Code</mat-label>
           <input type="text" matInput placeholder="000000000000" formControlName="ean_code" [maxLength]="EAN_CODE_MAX_LENGTH" (keypress)="numberOnly($event, false)">
-          <button disabled="disabled" type="button" matSuffix mat-icon-button (click)="generateRandomEan()" *ngIf="form.value.ean_code===''" matTooltip="Set a random EAN Code">
+          <button [disabled]="disabled" type="button" matSuffix mat-icon-button (click)="generateRandomEan()" *ngIf="form.value.ean_code===''" matTooltip="Set a random EAN Code">
             <mat-icon>bolt</mat-icon>
           </button>
           <mat-error *ngIf="formErrors.isInvalid('ean_code')">
