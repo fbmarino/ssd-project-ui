@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService, MusicsService} from "../../services/api";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {AuthManager} from "../../services/auth/auth";
@@ -29,6 +29,13 @@ export class CdFormDialogComponent implements OnInit {
   filteredGenres!: Observable<string[]>;
   publishAsText: string|null;
 
+  NAME_MAX_LENGTH = 50;
+  ARTIST_NAME_MAX_LENGTH = 50;
+  RECORD_COMPANY_MAX_LENGTH = 50;
+  GENRE_MAX_LENGTH = 25;
+  EAN_CODE_MAX_LENGTH = 13;
+  PRICE_MAX_LENGTH = 8;
+
   constructor(private readonly dialogRef: MatDialogRef<CdFormDialogComponent>,
               private readonly authService: AuthService,
               private readonly musicsService: MusicsService,
@@ -53,18 +60,24 @@ export class CdFormDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      name: new FormControl(''),
-      artist: new FormControl(''),
-      genre: new FormControl(''),
-      record_company: new FormControl(''),
-      ean_code: new FormControl(''),
-      price: new FormControl(''),
+      name: new FormControl('', [Validators.required]),
+      artist: new FormControl('', [Validators.required]),
+      genre: new FormControl('', [Validators.required]),
+      record_company: new FormControl('', [Validators.required]),
+      ean_code: new FormControl('', [Validators.required]),
+      price: new FormControl('', [Validators.required]),
     });
     this.filteredGenres = this.form.controls['genre'].valueChanges.pipe(
       startWith(''),
       map(value => this._filterGenre(value || '')),
     );
     this.formErrors = new FormErrorsHandler(this.form);
+
+    if (!this.auth.currentUser) {
+      for (let k in this.form.controls) {
+        this.form.controls[k].disable();
+      }
+    }
 
     if (this.id > 0) {
       this.musicsService.musicsRead(this.id)
@@ -145,5 +158,16 @@ export class CdFormDialogComponent implements OnInit {
           cd: response
         });
     });
+  }
+
+  numberOnly(event: KeyboardEvent, allowDot: boolean): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (allowDot && charCode == 46) {
+      return true;
+    }
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
   }
 }

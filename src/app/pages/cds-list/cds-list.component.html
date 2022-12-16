@@ -58,29 +58,33 @@
         <mat-card-header>
           <div mat-card-avatar class="mr-4"><cd-logo [name]="item.name"></cd-logo></div>
           <mat-card-title>
-            <div class="mb-1">
+            <div class="mb-1 break-words">
               {{item.name}}
             </div>
           </mat-card-title>
-          <mat-card-subtitle>by {{item.artist}}</mat-card-subtitle>
+          <mat-card-subtitle>
+            <div class="break-words">
+              by {{item.artist}}
+            </div>
+          </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
           <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 mt-6">
             <div class="flex">
               <div class="font-medium w-1/2">Genre:</div>
-              <div class="font-light w-1/2">{{item.genre}}</div>
+              <div class="font-light w-1/2 break-words">{{item.genre}}</div>
             </div>
             <div class="flex">
               <div class="font-medium w-1/2">Record Company:</div>
-              <div class="font-light w-1/2">{{item.record_company}}</div>
+              <div class="font-light w-1/2 break-words">{{item.record_company}}</div>
             </div>
             <div class="flex">
               <div class="font-medium w-1/2">EAN Code:</div>
-              <div class="font-light w-1/2">{{item.ean_code}}</div>
+              <div class="font-light w-1/2 break-words">{{item.ean_code}}</div>
             </div>
             <div class="flex">
               <div class="font-medium w-1/2">Price:</div>
-              <div class="font-light w-1/2">{{item.price}} €</div>
+              <div class="font-light w-1/2 break-words">{{item.price}} €</div>
             </div>
           </div>
           <div>

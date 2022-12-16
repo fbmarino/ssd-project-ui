@@ -15,6 +15,8 @@ export class RegisterDialogComponent implements OnInit {
   form!: FormGroup;
   formErrors!: FormErrorsHandler;
   loading = false;
+  USERNAME_MAX_LENGTH = 150;
+  PASSWORD_MAX_LENGTH = 128;
 
   constructor(private readonly dialogRef: MatDialogRef<RegisterDialogComponent>,
               private readonly authService: AuthService,

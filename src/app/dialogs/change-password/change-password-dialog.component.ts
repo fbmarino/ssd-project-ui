@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService, PasswordResetConfirm} from "../../services/api";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {AuthManager} from "../../services/auth/auth";
@@ -15,6 +15,7 @@ export class ChangePasswordDialogComponent implements OnInit {
   form!: FormGroup;
   formErrors!: FormErrorsHandler;
   loading = false;
+  PASSWORD_MAX_LENGTH = 128;
 
   constructor(private readonly dialogRef: MatDialogRef<ChangePasswordDialogComponent>,
               private readonly authService: AuthService,
@@ -24,8 +25,8 @@ export class ChangePasswordDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      new_password1: new FormControl(''),
-      new_password2: new FormControl(''),
+      new_password1: new FormControl('', [Validators.required]),
+      new_password2: new FormControl('', [Validators.required]),
     });
     this.formErrors = new FormErrorsHandler(this.form);
   }

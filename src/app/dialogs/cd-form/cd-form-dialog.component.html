@@ -11,7 +11,7 @@
     <div class="w-full">
       <mat-form-field class="w-full">
         <mat-label>Name</mat-label>
-        <input type="text" matInput placeholder="Nuntereggae più" formControlName="name">
+        <input type="text" matInput placeholder="Nuntereggae più" formControlName="name" [maxlength]="NAME_MAX_LENGTH">
         <mat-error *ngIf="formErrors.isInvalid('name')">
           {{formErrors.getErrorMessage('name')}}
         </mat-error>
@@ -20,7 +20,7 @@
     <div class="w-full">
       <mat-form-field class="w-full">
         <mat-label>Artist</mat-label>
-        <input type="text" matInput placeholder="Rino Gaetano" formControlName="artist">
+        <input type="text" matInput placeholder="Rino Gaetano" formControlName="artist" [maxlength]="ARTIST_NAME_MAX_LENGTH">
         <mat-error *ngIf="formErrors.isInvalid('artist')">
           {{formErrors.getErrorMessage('artist')}}
         </mat-error>
@@ -33,6 +33,7 @@
                placeholder="Pick one or type"
                matInput
                formControlName="genre"
+               [maxlength]="GENRE_MAX_LENGTH"
                [matAutocomplete]="auto">
         <button type="button" matSuffix mat-icon-button (click)="resetGenre()" *ngIf="form.value.genre!==''" matTooltip="Reset genre">
           <mat-icon>close</mat-icon>
@@ -50,7 +51,7 @@
     <div class="w-full">
       <mat-form-field class="w-full">
         <mat-label>Record Company</mat-label>
-        <input type="text" matInput placeholder="RCA Italiana" formControlName="record_company">
+        <input type="text" matInput placeholder="RCA Italiana" formControlName="record_company" [maxLength]="RECORD_COMPANY_MAX_LENGTH">
         <mat-error *ngIf="formErrors.isInvalid('record_company')">
           {{formErrors.getErrorMessage('record_company')}}
         </mat-error>
@@ -60,7 +61,7 @@
       <div class="w-1/2">
         <mat-form-field class="w-full">
           <mat-label>EAN Code</mat-label>
-          <input type="text" matInput placeholder="000000000000" formControlName="ean_code">
+          <input type="text" matInput placeholder="000000000000" formControlName="ean_code" [maxLength]="EAN_CODE_MAX_LENGTH" (keypress)="numberOnly($event, false)">
           <button type="button" matSuffix mat-icon-button (click)="generateRandomEan()" *ngIf="form.value.ean_code===''" matTooltip="Set a random EAN Code">
             <mat-icon>bolt</mat-icon>
           </button>
@@ -72,7 +73,7 @@
       <div class="w-1/2">
         <mat-form-field class="w-full">
           <mat-label>Price</mat-label>
-          <input type="text" matInput placeholder="10.99" formControlName="price">
+          <input type="text" matInput placeholder="10.99" formControlName="price" [maxLength]="PRICE_MAX_LENGTH" (keypress)="numberOnly($event, true)">
           <span matSuffix="" class="mr-4">€</span>
           <mat-error *ngIf="formErrors.isInvalid('price')">
             {{formErrors.getErrorMessage('price')}}

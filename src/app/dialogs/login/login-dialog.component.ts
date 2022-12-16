@@ -15,6 +15,8 @@ export class LoginDialogComponent implements OnInit {
   form!: FormGroup;
   formErrors!: FormErrorsHandler;
   loading = false;
+  USERNAME_MAX_LENGTH = 150;
+  PASSWORD_MAX_LENGTH = 128;
 
   constructor(private readonly dialogRef: MatDialogRef<LoginDialogComponent>,
               private readonly authService: AuthService,
@@ -36,9 +38,6 @@ export class LoginDialogComponent implements OnInit {
   }
 
   submit() {
-    if (!this.form.valid) {
-      return;
-    }
     this.form.markAllAsTouched();
     this.formErrors.resetAllErrors();
     this.loading = true;
