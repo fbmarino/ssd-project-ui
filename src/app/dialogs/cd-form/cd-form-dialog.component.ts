@@ -27,7 +27,8 @@ export class CdFormDialogComponent implements OnInit {
   loading = false;
   defaultGenres: string[] = MUSIC_GENRES;
   filteredGenres!: Observable<string[]>;
-  publishAsText: string|null;
+  publishAsText: string|null = null;
+  disabled: boolean = true;
 
   NAME_MAX_LENGTH = 50;
   ARTIST_NAME_MAX_LENGTH = 50;
@@ -48,8 +49,7 @@ export class CdFormDialogComponent implements OnInit {
     }
     if (this.auth.currentUser) {
       this.publishAsText = `Publish as ${this.auth.currentUser.username}`;
-    } else {
-      this.publishAsText = null;
+      this.disabled = false;
     }
   }
 
@@ -73,7 +73,7 @@ export class CdFormDialogComponent implements OnInit {
     );
     this.formErrors = new FormErrorsHandler(this.form);
 
-    if (!this.auth.currentUser) {
+    if (this.disabled) {
       for (let k in this.form.controls) {
         this.form.controls[k].disable();
       }
